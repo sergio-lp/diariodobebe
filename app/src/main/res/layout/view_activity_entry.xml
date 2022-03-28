@@ -1,205 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/layout_entry_line"
+        android:layout_width="15dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/line_top_end"
+        android:paddingTop="2dp">
+
+        <View
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/circle" />
+    </FrameLayout>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/img_activity_type"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/oval_background"
-                android:padding="8dp"
-                android:src="@drawable/ic_sleep"
-                app:civ_border_color="@color/gray"
-                app:civ_border_width="2dp"
-                app:layout_constraintEnd_toStartOf="@id/tv_entry_type"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_entry_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Sono"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/img_activity_type"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_entry_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_entry_type"
-                android:layout_marginTop="4dp"
-                android:text="@string/sleep_entry_time"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/tv_entry_type" />
-
-            <TextView
-                android:id="@+id/tv_entry_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Duração"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_entry_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="2 horas"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.8dp"
-                android:background="#cdcdcd" />
-
-            <ImageView
-                android:id="@+id/img_entry_details"
-                android:layout_width="wrap_content"
-                android:layout_height="26dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_toStartOf="@id/img_entry_details"
-                android:text="@string/expand_entry_view"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
         <LinearLayout
-            android:id="@+id/ll_entry_details_comment"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="16dp"
-            android:visibility="gone">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/feeding_entry_details"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/img_activity_type"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/oval_background"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_sleep"
+                    app:civ_border_color="@color/gray"
+                    app:civ_border_width="2dp"
+                    app:layout_constraintEnd_toStartOf="@id/tv_entry_type"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_right_breast_time"
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_entry_type"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/breast_right_time" />
+                    android:layout_marginStart="8dp"
+                    android:text="Sleep"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/img_activity_type"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_left_breast_time"
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_entry_time"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/breast_left_time" />
-            </LinearLayout>
+                    android:layout_below="@id/tv_entry_type"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/entry_time"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tv_entry_type" />
+
+                <TextView
+                    android:id="@+id/tv_entry_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Duration"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_entry_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="2 hours"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/ll_details_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:background="#cdcdcd" />
+
+                <ImageView
+                    android:id="@+id/img_entry_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toStartOf="@id/img_entry_details"
+                    android:text="@string/expand_entry_view"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/health_entry_details"
+                android:id="@+id/ll_entry_details_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="4dp"
                 android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tv_health_entry_condition"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/feeding_entry_details"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/health_condition" />
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tv_health_entry_symptoms"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/tv_right_breast_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/breast_right_time" />
+
+                    <TextView
+                        android:id="@+id/tv_left_breast_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/breast_left_time" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/health_entry_details"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/health_symptoms" />
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tv_health_entry_mood"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/tv_health_entry_condition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/health_condition" />
+
+                    <TextView
+                        android:id="@+id/tv_health_entry_symptoms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/health_symptoms" />
+
+                    <TextView
+                        android:id="@+id/tv_health_entry_mood"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/health_mood" />
+
+                    <TextView
+                        android:id="@+id/tv_health_entry_med"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/health_medication" />
+
+                    <TextView
+                        android:id="@+id/tv_health_entry_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/health_med_quantity" />
+
+                    <TextView
+                        android:id="@+id/tv_health_entry_temperature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/health_temperature" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_comment"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/health_mood" />
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_health_entry_med"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/health_medication" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/entry_comment"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_health_entry_quantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/health_med_quantity" />
+                    <TextView
+                        android:id="@+id/tv_entry_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ola esse é o comentário da amamentação" />
 
-                <TextView
-                    android:id="@+id/tv_health_entry_temperature"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/health_temperature" />
-
+                </LinearLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/entry_comment"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_entry_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ola esse é o comentário da amamentação" />
-
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-</androidx.cardview.widget.CardView>
+</LinearLayout>

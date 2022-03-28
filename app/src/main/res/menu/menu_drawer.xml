@@ -14,5 +14,36 @@
             android:icon="@drawable/ic_baseline_star_24"
             android:title="@string/menu_premium" />
 
+        <item
+            android:id="@+id/nav_sleep_report"
+            android:icon="@drawable/ic_sleep"
+            android:title="@string/sleep_report" />
+
+        <item
+            android:id="@+id/nav_feeding_report"
+            android:icon="@drawable/ic_baby_feeding"
+            android:title="@string/feeding_report" />
+
+
+        <item
+            android:id="@+id/nav_blog"
+            android:icon="@drawable/ic_baseline_public_24"
+            android:title="@string/menu_web" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="@string/menu_about" />
+
+        <item
+            android:id="@+id/nav_other_apps"
+            android:icon="@drawable/ic_baseline_android_24"
+            android:title="@string/menu_other_apps" />
+
+        <item
+            android:id="@+id/nav_rate"
+            android:icon="@drawable/ic_baseline_rate_review_24"
+            android:title="@string/menu_rate" />
+
     </group>
 </menu>

@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DiarioDoBebe">
         <activity
+            android:name=".ui.add_baby_activity.AddBabyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.IntroActivity"
+            android:theme="@style/Theme.DiarioDoBebe.NoActionBar" />
+        <activity
             android:name=".ui.main_activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.DiarioDoBebe.NoActionBar">

@@ -8,8 +8,8 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
-    <string name="PREFS" translatable="false" />
-    <string name="PREF_USER_ID" translatable="false" />
+    <string name="PREFS" translatable="false">PREFS</string>
+    <string name="PREF_OPENED" translatable="false">PREF_OPENED</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_premium">Premium</string>
@@ -29,5 +29,21 @@
     <string name="health_symptoms">Symptoms %1$s</string>
     <string name="entry_comment">Comment</string>
     <string name="health_mood">Mood: %1$s</string>
-    <string name="sleep_entry_time">Start: %1$s - End: %1$1</string>
+    <string name="entry_time">Start: %1$s - End: %2$s</string>
+    <string name="menu_rate">Rate us</string>
+    <string name="menu_about">About</string>
+    <string name="menu_other_apps">Our other apps</string>
+    <string name="menu_web">Blog</string>
+    <string name="sleep_report">Sleeping report</string>
+    <string name="feeding_report">Feeding report</string>
+    <string name="sleep">Sleep</string>
+    <string name="sleep_duration">Duration</string>
+    <string name="feeding">Feeding</string>
+    <string name="feeding_bottle">Baby bottle</string>
+    <string name="breast">Breast milk</string>
+    <string name="food">Food</string>
+    <string name="add_baby">Add baby</string>
+    <string name="no_baby_added">You\'ve not added your baby yet!</string>
+    <string name="boy">Boy</string>
+    <string name="girl">Girl</string>
 </resources>
