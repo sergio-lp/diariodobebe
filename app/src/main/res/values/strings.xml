@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Diário do Bebe</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="PREFS" translatable="false" />
+    <string name="PREF_USER_ID" translatable="false" />
+
+    <string name="menu_home">Home</string>
+    <string name="menu_premium">Premium</string>
+    <string name="support_email">suporte@email.com</string>
+    <string name="action_settings">Settings</string>
+    <string name="welcome">Welcome!</string>
+    <string name="welcome_description">If you want to track everything about your newborn baby, you\'re in the right place!</string>
+    <string name="lets_go">Let\'s go!</string>
+    <string name="app_features">Here you\'ll be able to register your baby\'s feeding sessions, measurements, pictures, health events and more! Hit the next button and let\'s go!</string>
+    <string name="expand_entry_view">Details</string>
+    <string name="breast_left_time">Left breast:\n%1$s</string>
+    <string name="breast_right_time">Right breast:\n%1$s</string>
+    <string name="health_condition">Condition: %1$s</string>
+    <string name="health_medication">Medication: %1$s</string>
+    <string name="health_temperature">Temperature: %1$s</string>
+    <string name="health_med_quantity">Amount: %1$s</string>
+    <string name="health_symptoms">Symptoms %1$s</string>
+    <string name="entry_comment">Comment</string>
+    <string name="health_mood">Mood: %1$s</string>
+    <string name="sleep_entry_time">Start: %1$s - End: %1$1</string>
+</resources>

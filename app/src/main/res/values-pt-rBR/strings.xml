@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Diário do Bebe</string>
+    <string name="menu_home">Início</string>
+    <string name="menu_premium">Premium</string>
+    <string name="support_email">E-mail</string>
+    <string name="action_settings">Configurações</string>
+</resources>
