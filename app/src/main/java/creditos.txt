@@ -6,4 +6,5 @@
 <a href="https://www.flaticon.com/free-icons/woman" title="woman icons">Woman icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/male" title="male icons">Male icons created by bqlqn - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/sleeping" title="sleeping icons">Sleeping icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/child" title="child icons">Child icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/baby-bottle" title="baby bottle icons">Baby bottle icons created by LAFS - Flaticon</a>

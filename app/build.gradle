@@ -38,12 +38,12 @@ dependencies {
     //https://github.com/AppIntro/AppIntro
     implementation 'com.github.AppIntro:AppIntro:6.2.0'
 
-    //https://github.com/hdodenhof/CircleImageView
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation 'com.google.code.gson:gson:2.9.0'
 
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+
+    implementation "com.android.billingclient:billing-ktx:4.1.0"
 
     implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
 
@@ -55,6 +55,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.play:core-ktx:1.8.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

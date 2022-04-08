@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import com.diariodobebe.R
+import com.diariodobebe.ui.add_baby_activity.AddBabyActivity
 import com.diariodobebe.ui.main_activity.MainActivity
 import com.github.appintro.AppIntro
 import com.github.appintro.AppIntro2
@@ -49,8 +50,19 @@ class IntroActivity : AppIntro2() {
             putBoolean(getString(R.string.PREF_OPENED), true)
             commit()
         }
-        startActivity(Intent(this, MainActivity::class.java))
+        val intent = Intent(this, AddBabyActivity::class.java)
+        intent.putExtra(HOME_DISABLE, true)
+        startActivity(intent)
         finish()
+    }
+
+    override fun onSkipPressed(currentFragment: Fragment?) {
+        super.onSkipPressed(currentFragment)
+        onDonePressed(currentFragment)
+    }
+
+    companion object {
+        const val HOME_DISABLE = "displayUpAsHomeDisabled"
     }
 
 }

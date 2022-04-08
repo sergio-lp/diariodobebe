@@ -3,20 +3,32 @@ package com.diariodobebe.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.diariodobebe.R
 import com.diariodobebe.models.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class EntryAdapter(private val entryList: MutableList<Entry>) :
     RecyclerView.Adapter<EntryAdapter.EntryVH>() {
-    private val VIEW_TYPE_TOP = 0
-    private val VIEW_TYPE_MIDDLE = 1
-    private val VIEW_TYPE_BOTTOM = 2
+
+    private object Constants {
+        const val VIEW_TYPE_TOP = 0
+        const val VIEW_TYPE_MIDDLE = 1
+        const val VIEW_TYPE_BOTTOM = 2
+    }
 
     class EntryVH(view: View) : RecyclerView.ViewHolder(view) {
+        val root: ViewGroup = view.findViewById(R.id.root)
+
+        var state: Boolean = false
+
         val entryLine: FrameLayout = view.findViewById(R.id.layout_entry_line)
         val entryPic: ImageView = view.findViewById(R.id.img_activity_type)
         val entryType: TextView = view.findViewById(R.id.tv_entry_type)
@@ -39,7 +51,7 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
         val entryHealthSymptoms: TextView = view.findViewById(R.id.tv_health_entry_symptoms)
         val entryHealthTemperature: TextView = view.findViewById(R.id.tv_health_entry_temperature)
 
-        val expandDetailsView: RelativeLayout = view.findViewById(R.id.ll_details_show)
+        val expandImage: ImageView = view.findViewById(R.id.img_entry_details)
         val detailsComment: LinearLayout = view.findViewById(R.id.ll_comment)
     }
 
@@ -53,81 +65,214 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
     override fun getItemViewType(position: Int): Int {
         return when (position) {
             0 -> {
-                VIEW_TYPE_TOP
+                Constants.VIEW_TYPE_TOP
             }
             entryList.size - 1 -> {
-                VIEW_TYPE_BOTTOM
+                Constants.VIEW_TYPE_BOTTOM
             }
             else -> {
-                VIEW_TYPE_MIDDLE
+                Constants.VIEW_TYPE_MIDDLE
             }
         }
     }
 
     override fun onBindViewHolder(holder: EntryVH, position: Int) {
-        val entry = entryList[position]
-        val context = holder.entryComment.context
+        var entry = entryList[position]
+        val ctx = holder.entryBreastDetailsLayout.context
 
-        when (holder.itemViewType) {
-            VIEW_TYPE_TOP -> {
-                holder.entryLine.background =
-                    ContextCompat.getDrawable(context, R.drawable.line_top_end)
-            }
-            VIEW_TYPE_MIDDLE -> {
-                holder.entryLine.background =
-                    ContextCompat.getDrawable(context, R.drawable.line_bg_middle)
-            }
-            VIEW_TYPE_BOTTOM -> {
-                holder.entryLine.background =
-                    ContextCompat.getDrawable(context, R.drawable.line_bottom_end)
-            }
-        }
+        val df = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+        df.timeZone = TimeZone.getTimeZone("UTC")
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = entry.date!!
 
-        if (entry.hasDetails == true) {
-            if (entry.comment != null) {
-                holder.entryComment.text = entry.comment.toString()
-            }
-            holder.expandDetailsView.visibility = View.VISIBLE
+        val strHour: String =
+            if (cal.get(Calendar.HOUR_OF_DAY) > 9) cal.get(Calendar.HOUR_OF_DAY)
+                .toString() else "0${cal.get(Calendar.HOUR_OF_DAY)}"
+        val strMinute: String =
+            if (cal.get(Calendar.MINUTE) > 9) cal.get(Calendar.MINUTE)
+                .toString() else "0${cal.get(Calendar.MINUTE)}"
+
+        holder.entryTime.text =
+            ctx.getString(R.string.date_time_template, df.format(entry.date), strHour, strMinute)
+
+        holder.root.setOnClickListener {
+            holder.state = toggleDetailsView(entry, holder, holder.state)
         }
 
         when (entry.type) {
-            Entry.ENTRY_SLEEP -> {
-                holder.entryType.text = context.getString(R.string.sleep)
-                holder.entryTime.text = context.getString(
-                    R.string.entry_time,
-                    (entry as Sleep).time.toString(),
-                    (entry as Sleep).timeEnd.toString()
-                )
-                holder.entryDescription.text = context.getString(R.string.sleep_duration)
-                holder.entryPic.setImageResource(R.drawable.ic_sleep)
-            }
-            Entry.ENTRY_FEEDING -> {
-                holder.entryType.text = context.getString(R.string.feeding)
-                holder.entryTime.text = context.getString(
-                    R.string.entry_time,
-                    (entry as Feeding).time.toString(),
-                    (entry as Feeding).timeEnd.toString()
-                )
-                holder.entryDescription.text = when ((entry as Feeding).feedingType) {
-                    Feeding.FEEDING_BOTTLE -> context.getString(R.string.feeding_bottle)
-                    Feeding.FEEDING_BREAST -> context.getString(R.string.breast)
-                    Feeding.FEEDING_FOOD -> context.getString(R.string.food)
-                    else -> context.getString(R.string.feeding)
-                }
-                holder.entryPic.setImageResource(R.drawable.ic_baby_feeding)
+            Entry.EntryType.ENTRY_FEEDING -> {
+                entry = entry as Feeding
 
-                if (entry.hasDetails == true && (entry as Feeding).leftBreastTime != null) {
-                    holder.entryBreastDetailsLayout.visibility = View.VISIBLE
-                    //TODO: Set each breast time
+                if (entry.rightBreastTime == null) {
+                    entry.rightBreastTime = 0
+                }
+
+                if (entry.leftBreastTime == null) {
+                    entry.leftBreastTime = 0
+                }
+                val durationMin = entry.leftBreastTime!! + entry.rightBreastTime!!
+                holder.entryLeftBreastTime.text = HtmlCompat.fromHtml(
+                    ctx.getString(
+                        R.string.breast_left_time,
+                        entry.leftBreastTime.toString()
+                    ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
+                holder.entryRightBreast.text = HtmlCompat.fromHtml(
+                    ctx.getString(
+                        R.string.breast_right_time,
+                        entry.rightBreastTime.toString()
+                    ), HtmlCompat.FROM_HTML_MODE_COMPACT
+                )
+
+                holder.entryType.text = when (entry.feedingType) {
+                    Feeding.FeedingType.FEEDING_BREAST -> {
+                        ctx.getString(R.string.breast)
+                    }
+                    Feeding.FeedingType.FEEDING_BOTTLE -> {
+                        ctx.getString(R.string.feeding_bottle)
+                    }
+                    else -> {
+                        ctx.getString(R.string.food)
+                    }
+                }
+                holder.entryDescription.text = ctx.getString(R.string.sleep_duration)
+                holder.entryValue.text = ctx.getString(R.string.duration_template, durationMin)
+                holder.entryComment.text = entry.comment
+
+                holder.entryPic.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        ctx,
+                        R.drawable.ic_baby_feeding
+                    )
+                )
+            }
+            Entry.EntryType.ENTRY_SLEEP -> {
+                entry = entry as Sleep
+                holder.entryType.text = ctx.getString(R.string.sleep)
+                holder.entryValue.text = entry.duration.toString()
+                holder.entryComment.text = entry.comment
+
+                holder.entryPic.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        ctx,
+                        R.drawable.ic_sleep
+                    )
+                )
+            }
+            Entry.EntryType.ENTRY_DIAPER -> {
+                entry = entry as Diaper
+
+                holder.entryType.text = ctx.getString(R.string.diaper)
+                holder.entryPic.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        ctx,
+                        R.drawable.ic_diaper
+                    )
+                )
+                holder.entryComment.text = entry.comment
+
+                holder.entryValue.text = when (entry.state) {
+                    Diaper.STATE_DRY -> {
+                        ctx.getString(R.string.diaper_dry)
+                    }
+                    Diaper.STATE_PEE -> {
+                        ctx.getString(R.string.diaper_pee)
+                    }
+                    else -> {
+                        ctx.getString(R.string.diaper_poop)
+                    }
                 }
             }
-            Entry.ENTRY_HEALTH -> {
-                entryList.add(entry as HealthEvent)
+            Entry.EntryType.ENTRY_HEALTH -> {
+                entry = entry as Health
+
+                holder.entryType.text = ctx.getString(R.string.health)
+                holder.entryPic.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        ctx,
+                        R.drawable.ic_health
+                    )
+                )
+                holder.entryComment.text = entry.comment
+
+                holder.entryHealthCondition.text = entry.healthEvent
+                holder.entryHealthMed.text = entry.medication
+                holder.entryHealthQuantity.text = entry.medAmount.toString()
+                holder.entryHealthTemperature.text = entry.temperature.toString()
+
+                var symptoms = ""
+                if (!entry.symptoms.isNullOrEmpty()) {
+                    entry.symptoms!!.forEach {
+                        symptoms += it + "\n"
+                    }
+                }
+
+                holder.entryHealthSymptoms.text = symptoms
+
+                holder.entryHealthMood.text = when (entry.mood) {
+                    Health.MOOD_BAD -> ctx.getString(R.string.bad_mood)
+                    Health.MOOD_NORMAL -> ctx.getString(R.string.normal_mood)
+                    Health.MOOD_GOOD -> ctx.getString(R.string.good_mood)
+                    else -> ctx.getString(R.string.error_short)
+                }
             }
-            Entry.ENTRY_MEASUREMENT -> {
-                entryList.add(entry as Measurement)
+            Entry.EntryType.ENTRY_EVENT -> {
+                entry = entry as Event
+
+                holder.entryType.text = ctx.getString(R.string.event)
+                holder.entryPic.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        ctx,
+                        R.drawable.ic_activity
+                    )
+                )
             }
         }
+
+        when (holder.itemViewType) {
+            Constants.VIEW_TYPE_TOP -> {
+                holder.entryLine.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.line_top_end)
+            }
+            Constants.VIEW_TYPE_MIDDLE -> {
+                holder.entryLine.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.line_bg_middle)
+            }
+            Constants.VIEW_TYPE_BOTTOM -> {
+                holder.entryLine.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.line_bottom_end)
+            }
+        }
+    }
+
+    private fun toggleDetailsView(e: Entry, holder: EntryVH, status: Boolean): Boolean {
+        val visibility = if (!status) View.VISIBLE else View.GONE
+
+        androidx.transition.TransitionManager.beginDelayedTransition(
+            holder.root,
+            androidx.transition.AutoTransition()
+        )
+        if (e.type == Entry.EntryType.ENTRY_FEEDING) {
+            val entry = e as Feeding
+
+            if (!entry.comment.isNullOrBlank()) {
+                holder.detailsComment.visibility = visibility
+            }
+            holder.entryDetailsLayout.visibility = visibility
+            if (entry.feedingType == Feeding.FeedingType.FEEDING_BREAST) {
+                holder.entryBreastDetailsLayout.visibility = visibility
+            }
+
+        } else if (e.type == Entry.EntryType.ENTRY_HEALTH) {
+            val entry = e as Health
+            if (!entry.comment.isNullOrBlank()) {
+                holder.detailsComment.visibility = visibility
+            }
+            holder.entryDetailsLayout.visibility = visibility
+            holder.entryHealthDetailsLayout.visibility = visibility
+        }
+
+        return !status
     }
 
     override fun getItemCount(): Int {

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.diariodobebe">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DiarioDoBebe">
+        <activity
+            android:name=".ui.entry_activities.feeding_activity.AddFeedingActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.add_baby_activity.AddBabyActivity"
             android:exported="false" />

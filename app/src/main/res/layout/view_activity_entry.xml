@@ -20,9 +20,14 @@
     </FrameLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="16dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical">
 
         <LinearLayout
@@ -41,9 +46,6 @@
                     android:layout_height="60dp"
                     android:background="@drawable/oval_background"
                     android:padding="8dp"
-                    android:src="@drawable/ic_sleep"
-                    app:civ_border_color="@color/gray"
-                    app:civ_border_width="2dp"
                     app:layout_constraintEnd_toStartOf="@id/tv_entry_type"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,8 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Sleep"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@id/img_activity_type"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -64,7 +65,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_entry_type"
                     android:layout_marginTop="4dp"
-                    android:text="@string/entry_time"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_entry_type" />
 
@@ -72,7 +72,6 @@
                     android:id="@+id/tv_entry_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Duration"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -81,31 +80,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="2 hours"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="#cdcdcd" />
+
             <RelativeLayout
                 android:id="@+id/ll_details_show"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.8dp"
-                    android:background="#cdcdcd" />
+                android:paddingTop="16dp">
 
                 <ImageView
                     android:id="@+id/img_entry_details"
                     android:layout_width="wrap_content"
                     android:layout_height="26dp"
                     android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
 
@@ -135,6 +133,7 @@
                     android:id="@+id/feeding_entry_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -223,8 +222,7 @@
                     <TextView
                         android:id="@+id/tv_entry_comment"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ola esse é o comentário da amamentação" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 

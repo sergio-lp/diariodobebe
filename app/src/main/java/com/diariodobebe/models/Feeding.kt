@@ -1,48 +1,75 @@
 package com.diariodobebe.models
 
 import android.os.Parcel
-import android.os.Parcelable
 import java.util.*
 
 class Feeding(
-    id: String?,
+    id: Int?,
+    date: Long?,
+    type: Int?,
+    comment: String?,
+    var feedingType: Int?,
+    var rightBreastTime: Int?,
+    var leftBreastTime: Int?,
+
+    ) : Entry(id, date, type, comment) {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readLong(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+    )
+
+    override fun writeToParcel(parcel: Parcel, p1: Int) {
+        parcel.writeInt(id ?: 0)
+        parcel.writeLong(date ?: Calendar.getInstance().timeInMillis)
+        parcel.writeInt(type ?: 0)
+        parcel.writeString(comment)
+        parcel.writeInt(feedingType ?: 0)
+        parcel.writeInt(rightBreastTime ?: 0)
+        parcel.writeInt(leftBreastTime?: 0)
+    }
+
+    object FeedingType {
+        const val FEEDING_BOTTLE = 0
+        const val FEEDING_BREAST = 1
+        const val FEEDING_FOOD = 2
+    }
+}
+
+/*class Feeding(
+    id: Int?,
     type: Int?,
     hasDetails: Boolean?,
     comment: String?,
     var feedingType: Int?,
-    var leftBreastTime: Long?,
-    var rightBreastTime: Long?
+    var leftBreastTime: String?,
+    var rightBreastTime: String?
 ) : Entry(id, type, hasDetails, comment) {
-    var timeEnd: Date = Date()
-
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
+        parcel.readInt(),
         parcel.readInt(),
         parcel.readByte().compareTo(0) == 1,
         parcel.readString(),
         parcel.readInt(),
-        parcel.readLong(),
-        parcel.readLong()
+        parcel.readString(),
+        parcel.readString()
     ) {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = parcel.readLong()
-        super.time = calendar.time
-
-        calendar.timeInMillis = parcel.readLong()
-        timeEnd = calendar.time
+        super.time = parcel.readLong()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)
-        val calendar = Calendar.getInstance()
-        calendar.time = this.time ?: Date()
-        parcel.writeLong(calendar.timeInMillis)
+        parcel.writeInt(id ?: 0)
         parcel.writeInt(type ?: 0)
         parcel.writeByte((if (hasDetails == true) 1 else 0).toByte())
         parcel.writeString(comment)
         parcel.writeInt(feedingType ?: 0)
-        parcel.writeLong(leftBreastTime ?: 0)
-        parcel.writeLong(rightBreastTime ?: 0)
+        parcel.writeString(leftBreastTime)
+        parcel.writeString(rightBreastTime)
+        parcel.writeLong(super.time ?: 0)
     }
 
     override fun describeContents(): Int {
@@ -65,4 +92,4 @@ class Feeding(
             }
         }
     }
-}
+}*/

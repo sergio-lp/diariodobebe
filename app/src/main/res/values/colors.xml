@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#3c7566</color>
-    <color name="colorPrimary">#478978</color>
-    <color name="colorPrimaryVariant">#84DCC6</color>
-    <color name="colorAccent">#D6EDFF</color>
-    <color name="colorAccentVariant">#ACD7EC</color>
+    <color name="colorPrimaryDark">#cac56a</color>
+    <color name="colorPrimaryDarker">#6A6731</color>
+    <color name="colorPrimary">#FFF89A</color>
+    <color name="colorAccent">#D4FF9A</color>
+    <color name="colorAccentVariant">#495F2C</color>
+
+    <color name="colorPrimaryEmphasis">#FFEA00</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#595353</color>
     <color name="material_red">#EF9A9A</color>
     <color name="material_green">#A5D6A7</color>
+
+    <color name="colorGenderFemaleUnselected">#CCFFE5E5</color>
+    <color name="colorGenderMaleUnselected">#C3D6EDFF</color>
+    <color name="colorGenderMaleSelected">#348FD6</color>
+    <color name="colorGenderFemaleSelected">#D66C6C</color>
 </resources>

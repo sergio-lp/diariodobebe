@@ -11,7 +11,8 @@
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/Theme.DiarioDoBebe.AppBarOverlay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -19,8 +20,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:title="@string/add_baby"
-            app:titleTextColor="@color/white" />
+            app:popupTheme="@style/Theme.DiarioDoBebe.PopupOverlay"
+            app:title="@string/add_baby" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -48,11 +49,13 @@
                     android:layout_marginEnd="16dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?selectableItemBackground"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     android:orientation="vertical"
+                    android:padding="8dp"
                     tools:ignore="UnusedAttribute">
 
                     <ImageView
+                        android:id="@+id/img_male"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@drawable/circle"
@@ -60,12 +63,12 @@
                         android:src="@drawable/ic_male" />
 
                     <TextView
+                        android:id="@+id/tv_male"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="8dp"
-                        android:text="@string/boy"
-                        android:textStyle="bold" />
+                        android:text="@string/boy" />
 
                 </LinearLayout>
 
@@ -77,11 +80,13 @@
                     android:layout_toEndOf="@id/btn_male"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?selectableItemBackground"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     android:orientation="vertical"
+                    android:padding="8dp"
                     tools:ignore="UnusedAttribute">
 
                     <ImageView
+                        android:id="@+id/img_female"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@drawable/circle_red"
@@ -89,26 +94,103 @@
                         android:src="@drawable/ic_female" />
 
                     <TextView
+                        android:id="@+id/tv_female"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="8dp"
-                        android:text="@string/girl"
-                        android:textStyle="bold" />
+                        android:text="@string/girl" />
 
                 </LinearLayout>
 
             </RelativeLayout>
 
-            <EditText
-                android:id="@+id/ed_baby_name"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_baby_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/sex_not_set"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_height="wrap_content" />
+                android:text="@string/select_photo"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/shape_circle"
+                android:elevation="12dp"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="80dp">
+
+                <ImageView
+                    android:id="@+id/btn_baby_pic"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:padding="18dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_baseline_photo_24" />
+
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/baby_name"
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black"
+                app:helperTextTextColor="@color/black"
+                app:hintTextColor="@color/black">
+
+                <EditText
+                    android:id="@+id/ed_baby_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/baby_birth_date"
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black">
+
+                <EditText
+                    android:id="@+id/ed_baby_birthdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:inputType="date" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_add_baby"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="@string/add_baby" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
 </LinearLayout>
