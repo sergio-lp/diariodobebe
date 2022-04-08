@@ -9,37 +9,33 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.diariodobebe.R
-import com.diariodobebe.databinding.BreastFragmentBinding
+import com.diariodobebe.databinding.FragmentBottleBinding
 import com.diariodobebe.helpers.GetBaby
-import com.diariodobebe.models.Baby
 import com.diariodobebe.models.Entry
 import com.diariodobebe.models.Feeding
-import com.diariodobebe.ui.home.HomeViewModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.text.DateFormat
 import java.util.*
 
-class BreastFragment : Fragment() {
-    private val calFeedingStart: Calendar = Calendar.getInstance()
+class BottleFragment : Fragment() {
+    private val calFeedingStart = Calendar.getInstance()
     private var hourFeedingStart: Int? = null
     private var minuteFeedingStart: Int? = null
 
-    private var _binding: BreastFragmentBinding? = null
+    private var _binding: FragmentBottleBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = BreastFragmentBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        _binding = FragmentBottleBinding.inflate(layoutInflater)
 
         binding.edFeedingDate.setOnClickListener {
             val calendarConstraints = CalendarConstraints.Builder().setValidator(
@@ -91,17 +87,9 @@ class BreastFragment : Fragment() {
                     )
                 )
             }
-
         }
 
         binding.btnAddFeeding.setOnClickListener {
-            val check = checkEditTexts(
-                binding.edFeedingStart,
-                binding.edFeedingDate,
-                binding.timeBreastRight,
-                binding.timeBreastLeft
-            )
-
             val file = File(
                 requireActivity().filesDir,
                 requireActivity().getSharedPreferences(
@@ -109,8 +97,15 @@ class BreastFragment : Fragment() {
                     Context.MODE_PRIVATE
                 ).getString("baby", "") + ".json"
             )
+
             val baby = GetBaby.getBaby(file)
-            if (check) {
+
+            if (checkEditTexts(
+                    binding.edFeedingStart,
+                    binding.edFeedingDate,
+                    binding.edBottleMilliliters
+                )
+            ) {
                 var id = baby.lastEntryId
                 if (id == null) {
                     id = 0
@@ -123,18 +118,9 @@ class BreastFragment : Fragment() {
                     null,
                     Entry.EntryType.ENTRY_FEEDING,
                     null,
-                    Feeding.FeedingType.FEEDING_BREAST,
-                    if (binding.timeBreastRight.text.isEmpty()) 0 else binding.timeBreastRight.text.toString()
-                        .toInt(),
-                    if (binding.timeBreastLeft.text.isEmpty()) 0 else binding.timeBreastLeft.text.toString()
-                        .toInt(),
-
-                    )
-                if (!binding.edBreastComment.text.isNullOrBlank()) {
-                    feeding.comment = binding.edBreastComment.text.toString()
-                } else {
-                    feeding.comment = null
-                }
+                    Feeding.FeedingType.FEEDING_BOTTLE,
+                    milliliters = binding.edBottleMilliliters.text.toString().toInt()
+                )
 
                 feeding.date = calFeedingStart.timeInMillis
 
@@ -153,18 +139,15 @@ class BreastFragment : Fragment() {
                     .show()
                 requireActivity().finish()
             }
-
         }
 
-        return root
+        return binding.root
     }
-
 
     private fun checkEditTexts(
         edStartTime: EditText,
         edDate: EditText,
-        edRightTime: EditText,
-        edLeftTime: EditText
+        edMilliliters: EditText
     ): Boolean {
         if (edDate.text.isNullOrBlank()) {
             edDate.error = getString(R.string.please_fill_field)
@@ -176,13 +159,11 @@ class BreastFragment : Fragment() {
             return false
         }
 
-        if (edRightTime.text.isNullOrBlank() && edLeftTime.text.isNullOrBlank()) {
-            edRightTime.error = getString(R.string.please_fill_one)
-            edLeftTime.error = getString(R.string.please_fill_one)
+        if (edMilliliters.text.isNullOrBlank()) {
+            edMilliliters.error = getString(R.string.please_inform_milliliters)
             return false
         }
 
         return true
     }
-
 }

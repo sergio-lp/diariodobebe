@@ -95,4 +95,13 @@
     <string name="good_mood">Good</string>
     <string name="error_short">Error</string>
     <string name="date_time_template">%1$s %2$s:%3$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bottle_milliliters_hint">Quantity (mL)</string>
+    <string name="please_inform_milliliters">Please inform the quantity that was fed to your baby (milliliters).</string>
+    <string name="milliliters">Milliliters</string>
+    <string name="milliliters_template">%1$d mL</string>
+    <string name="food_type_hint">Food type</string>
+    <string name="no_food_type_alert">No food type</string>
+    <string name="no_food_type_message">You have not informed any food type, would you like to continue like that?</string>
 </resources>

@@ -103,48 +103,54 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
             Entry.EntryType.ENTRY_FEEDING -> {
                 entry = entry as Feeding
 
-                if (entry.rightBreastTime == null) {
-                    entry.rightBreastTime = 0
-                }
-
-                if (entry.leftBreastTime == null) {
-                    entry.leftBreastTime = 0
-                }
-                val durationMin = entry.leftBreastTime!! + entry.rightBreastTime!!
-                holder.entryLeftBreastTime.text = HtmlCompat.fromHtml(
-                    ctx.getString(
-                        R.string.breast_left_time,
-                        entry.leftBreastTime.toString()
-                    ), HtmlCompat.FROM_HTML_MODE_LEGACY
-                )
-                holder.entryRightBreast.text = HtmlCompat.fromHtml(
-                    ctx.getString(
-                        R.string.breast_right_time,
-                        entry.rightBreastTime.toString()
-                    ), HtmlCompat.FROM_HTML_MODE_COMPACT
-                )
-
-                holder.entryType.text = when (entry.feedingType) {
-                    Feeding.FeedingType.FEEDING_BREAST -> {
-                        ctx.getString(R.string.breast)
-                    }
-                    Feeding.FeedingType.FEEDING_BOTTLE -> {
-                        ctx.getString(R.string.feeding_bottle)
-                    }
-                    else -> {
-                        ctx.getString(R.string.food)
-                    }
-                }
-                holder.entryDescription.text = ctx.getString(R.string.sleep_duration)
-                holder.entryValue.text = ctx.getString(R.string.duration_template, durationMin)
                 holder.entryComment.text = entry.comment
-
                 holder.entryPic.setImageDrawable(
                     ContextCompat.getDrawable(
                         ctx,
                         R.drawable.ic_baby_feeding
                     )
                 )
+                if (entry.feedingType == Feeding.FeedingType.FEEDING_BOTTLE) {
+                    holder.entryDescription.text = ctx.getString(R.string.milliliters)
+                    holder.entryValue.text = ctx.getString(R.string.milliliters_template, entry.milliliters)
+                    holder.entryType.text = ctx.getString(R.string.feeding_bottle)
+                } else if (entry.feedingType == Feeding.FeedingType.FEEDING_BREAST) {
+                    if (entry.rightBreastTime == null) {
+                        entry.rightBreastTime = 0
+                    }
+
+                    if (entry.leftBreastTime == null) {
+                        entry.leftBreastTime = 0
+                    }
+                    val durationMin = entry.leftBreastTime!! + entry.rightBreastTime!!
+                    holder.entryLeftBreastTime.text = HtmlCompat.fromHtml(
+                        ctx.getString(
+                            R.string.breast_left_time,
+                            entry.leftBreastTime.toString()
+                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                    )
+                    holder.entryRightBreast.text = HtmlCompat.fromHtml(
+                        ctx.getString(
+                            R.string.breast_right_time,
+                            entry.rightBreastTime.toString()
+                        ), HtmlCompat.FROM_HTML_MODE_COMPACT
+                    )
+
+                    holder.entryType.text = when (entry.feedingType) {
+                        Feeding.FeedingType.FEEDING_BREAST -> {
+                            ctx.getString(R.string.breast)
+                        }
+                        Feeding.FeedingType.FEEDING_BOTTLE -> {
+                            ctx.getString(R.string.feeding_bottle)
+                        }
+                        else -> {
+                            ctx.getString(R.string.food)
+                        }
+                    }
+                    holder.entryDescription.text = ctx.getString(R.string.sleep_duration)
+                    holder.entryValue.text = ctx.getString(R.string.duration_template, durationMin)
+
+                }
             }
             Entry.EntryType.ENTRY_SLEEP -> {
                 entry = entry as Sleep

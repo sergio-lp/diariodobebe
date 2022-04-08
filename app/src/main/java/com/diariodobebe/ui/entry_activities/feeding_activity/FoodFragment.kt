@@ -1,45 +1,43 @@
 package com.diariodobebe.ui.entry_activities.feeding_activity
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.diariodobebe.R
-import com.diariodobebe.databinding.BreastFragmentBinding
+import com.diariodobebe.databinding.FragmentFoodBinding
 import com.diariodobebe.helpers.GetBaby
-import com.diariodobebe.models.Baby
 import com.diariodobebe.models.Entry
 import com.diariodobebe.models.Feeding
-import com.diariodobebe.ui.home.HomeViewModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.text.DateFormat
 import java.util.*
 
-class BreastFragment : Fragment() {
+class FoodFragment : Fragment() {
     private val calFeedingStart: Calendar = Calendar.getInstance()
     private var hourFeedingStart: Int? = null
     private var minuteFeedingStart: Int? = null
 
-    private var _binding: BreastFragmentBinding? = null
+    private var _binding: FragmentFoodBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = BreastFragmentBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        _binding = FragmentFoodBinding.inflate(layoutInflater)
+        val root = binding.root
 
         binding.edFeedingDate.setOnClickListener {
             val calendarConstraints = CalendarConstraints.Builder().setValidator(
@@ -98,8 +96,7 @@ class BreastFragment : Fragment() {
             val check = checkEditTexts(
                 binding.edFeedingStart,
                 binding.edFeedingDate,
-                binding.timeBreastRight,
-                binding.timeBreastLeft
+                binding.edFoodType,
             )
 
             val file = File(
@@ -123,15 +120,11 @@ class BreastFragment : Fragment() {
                     null,
                     Entry.EntryType.ENTRY_FEEDING,
                     null,
-                    Feeding.FeedingType.FEEDING_BREAST,
-                    if (binding.timeBreastRight.text.isEmpty()) 0 else binding.timeBreastRight.text.toString()
-                        .toInt(),
-                    if (binding.timeBreastLeft.text.isEmpty()) 0 else binding.timeBreastLeft.text.toString()
-                        .toInt(),
-
-                    )
-                if (!binding.edBreastComment.text.isNullOrBlank()) {
-                    feeding.comment = binding.edBreastComment.text.toString()
+                    Feeding.FeedingType.FEEDING_FOOD,
+                    foodType = binding.edFoodType.text.toString()
+                )
+                if (!binding.edFoodComment.text.isNullOrBlank()) {
+                    feeding.comment = binding.edFoodComment.text.toString()
                 } else {
                     feeding.comment = null
                 }
@@ -159,13 +152,12 @@ class BreastFragment : Fragment() {
         return root
     }
 
-
     private fun checkEditTexts(
         edStartTime: EditText,
         edDate: EditText,
-        edRightTime: EditText,
-        edLeftTime: EditText
+        edFoodType: EditText,
     ): Boolean {
+        var ret = false
         if (edDate.text.isNullOrBlank()) {
             edDate.error = getString(R.string.please_fill_field)
             return false
@@ -176,13 +168,22 @@ class BreastFragment : Fragment() {
             return false
         }
 
-        if (edRightTime.text.isNullOrBlank() && edLeftTime.text.isNullOrBlank()) {
-            edRightTime.error = getString(R.string.please_fill_one)
-            edLeftTime.error = getString(R.string.please_fill_one)
-            return false
+        if (edFoodType.text.isNullOrBlank()) {
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.no_food_type_alert))
+                .setMessage(getString(R.string.no_food_type_message))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    ret = true
+                }
+                .setNegativeButton(getString(R.string.no)) { _, _ ->
+                    ret = false
+                }
+                .setCancelable(true)
+                .show()
         }
 
-        return true
+        return ret
     }
+
 
 }

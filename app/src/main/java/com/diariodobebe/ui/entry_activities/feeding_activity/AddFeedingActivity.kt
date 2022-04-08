@@ -30,6 +30,7 @@ class AddFeedingActivity : AppCompatActivity() {
 
         val fragmentList = mutableListOf<Fragment>()
         fragmentList.add(BreastFragment())
+        fragmentList.add(BottleFragment())
 
         binding.viewPager.adapter =
             FeedingPagerAdapter(fragmentList, supportFragmentManager, lifecycle)
