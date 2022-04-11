@@ -7,22 +7,34 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.diariodobebe.ui.home.HomeFragment"
+        android:name="com.diariodobebe.ui.main_activity.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
 
     <fragment
         android:id="@+id/nav_premium"
-        android:name="com.diariodobebe.ui.premium.PremiumFragment"
+        android:name="com.diariodobebe.ui.main_activity.premium.PremiumFragment"
         android:label="@string/menu_premium"
         tools:layout="@layout/fragment_premium" />
 
     <fragment
+        android:id="@+id/nav_about"
+        android:name="com.diariodobebe.ui.main_activity.about.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about" />
+
+    <fragment
         android:id="@+id/nav_blog"
-        android:name="com.diariodobebe.ui.blog.BlogFragment"
+        android:name="com.diariodobebe.ui.main_activity.blog.BlogFragment"
         android:label="@string/menu_web"
         tools:layout="@layout/blog_fragment" />
+
+    <fragment
+        android:id="@+id/nav_sleep_report"
+        android:name="com.diariodobebe.ui.main_activity.report.ReportFragment"
+        android:label="@string/sleep_report"
+        tools:layout="@layout/fragment_report" />
 
 
     <dialog

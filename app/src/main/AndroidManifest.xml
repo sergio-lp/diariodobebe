@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission-sdk-23 android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,6 +15,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DiarioDoBebe">
+        <receiver
+            android:name=".helpers.Notification"
+            android:enabled="true" />
+        <activity
+            android:name=".ui.entry_activities.picture_activity.PictureActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
+        <activity
+            android:name=".ui.entry_activities.health_activity.AddHealthActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.entry_activities.sleep_activity.AddSleepActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.entry_activities.event_activity.AddEventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.entry_activities.diaper_activity.AddDiaperActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.entry_activities.measurement_activity.AddMeasureActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.entry_activities.feeding_activity.AddFeedingActivity"
             android:exported="false" />

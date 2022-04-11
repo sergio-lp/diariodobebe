@@ -3,14 +3,10 @@ package com.diariodobebe.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import com.diariodobebe.R
 import com.diariodobebe.ui.add_baby_activity.AddBabyActivity
-import com.diariodobebe.ui.main_activity.MainActivity
-import com.github.appintro.AppIntro
 import com.github.appintro.AppIntro2
 import com.github.appintro.AppIntroFragment
 

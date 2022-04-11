@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:padding="16dp"
+    tools:context=".ui.entry_activities.health_activity.HealthConditionFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_health_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/health_date"
+            android:labelFor="@id/ed_health_date">
+
+            <EditText
+                android:id="@+id/ed_health_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:inputType="none"
+                tools:ignore="TextFields" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_health_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/health_time"
+            android:labelFor="@id/ed_health_time">
+
+            <EditText
+                android:id="@+id/ed_health_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_health_add" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_health_condition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/health_duration_hint"
+            android:labelFor="@id/ed_health_condition">
+
+            <EditText
+                android:id="@+id/ed_health_condition"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:gravity="top"
+                android:importantForAutofill="no"
+                android:inputType="textCapSentences|textMultiLine" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/symptoms"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@color/colorPrimary"
+            android:padding="8dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_symptoms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="true" />
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btn_add_symptom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="@string/add_symptom"
+            android:textColor="@color/colorPrimaryDarker"
+            android:theme="@style/ThemeOverlay.Material3.Button.TextButton" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <EditText
+                android:id="@+id/ed_health_comment"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="top"
+                android:hint="@string/comment_hint"
+                android:importantForAutofill="no"
+                android:inputType="textCapSentences|textMultiLine"
+                android:padding="16dp"
+                android:scrollbars="vertical" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

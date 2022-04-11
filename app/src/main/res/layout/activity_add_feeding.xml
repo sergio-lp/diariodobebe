@@ -30,7 +30,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/appbar_layout"
         android:layout_gravity="top"
-        android:background="@color/colorPrimary" />
+        android:background="@color/colorPrimary"
+        app:tabIndicatorColor="@color/black"
+        app:tabRippleColor="@color/gray"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/colorPrimaryDarker" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"

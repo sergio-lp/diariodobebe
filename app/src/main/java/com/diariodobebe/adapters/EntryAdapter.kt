@@ -1,17 +1,19 @@
 package com.diariodobebe.adapters
 
+import android.content.Intent
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.diariodobebe.R
 import com.diariodobebe.models.*
+import com.diariodobebe.ui.entry_activities.picture_activity.PictureActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +31,10 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
 
         var state: Boolean = false
 
+        val llDetailsShow: RelativeLayout = view.findViewById(R.id.ll_details_show)
+
+        val entryGroupDateTv: TextView = view.findViewById(R.id.tv_entry_day)
+
         val entryLine: FrameLayout = view.findViewById(R.id.layout_entry_line)
         val entryPic: ImageView = view.findViewById(R.id.img_activity_type)
         val entryType: TextView = view.findViewById(R.id.tv_entry_type)
@@ -37,11 +43,18 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
         val entryValue: TextView = view.findViewById(R.id.tv_entry_value)
         val entryComment: TextView = view.findViewById(R.id.tv_entry_comment)
 
-        val entryDetailsLayout: LinearLayout = view.findViewById(R.id.ll_entry_details_comment)
+        val entryDetailsLayout: LinearLayout = view.findViewById(R.id.ll_entry_details)
+
+        val entryDiaperDetails: LinearLayout = view.findViewById(R.id.ll_diaper_details)
+        val entryDiaperBrand: TextView = view.findViewById(R.id.tv_diaper_brand)
+
+        val entryActivityDescription: LinearLayout = view.findViewById(R.id.ll_activity_details)
+        val entryActivityDetails: TextView = view.findViewById(R.id.tv_activity_details)
 
         val entryBreastDetailsLayout: LinearLayout = view.findViewById(R.id.feeding_entry_details)
         val entryLeftBreastTime: TextView = view.findViewById(R.id.tv_left_breast_time)
         val entryRightBreast: TextView = view.findViewById(R.id.tv_right_breast_time)
+        val entryFoodType: TextView = view.findViewById(R.id.tv_feeding_food_type)
 
         val entryHealthDetailsLayout: LinearLayout = view.findViewById(R.id.health_entry_details)
         val entryHealthCondition: TextView = view.findViewById(R.id.tv_health_entry_condition)
@@ -51,8 +64,7 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
         val entryHealthSymptoms: TextView = view.findViewById(R.id.tv_health_entry_symptoms)
         val entryHealthTemperature: TextView = view.findViewById(R.id.tv_health_entry_temperature)
 
-        val expandImage: ImageView = view.findViewById(R.id.img_entry_details)
-        val detailsComment: LinearLayout = view.findViewById(R.id.ll_comment)
+        val entryCommentLayout: LinearLayout = view.findViewById(R.id.ll_comment)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryVH {
@@ -63,7 +75,7 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (position) {
+        val viewType: Int = when (position) {
             0 -> {
                 Constants.VIEW_TYPE_TOP
             }
@@ -74,6 +86,8 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
                 Constants.VIEW_TYPE_MIDDLE
             }
         }
+
+        return viewType
     }
 
     override fun onBindViewHolder(holder: EntryVH, position: Int) {
@@ -81,8 +95,9 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
         val ctx = holder.entryBreastDetailsLayout.context
 
         val df = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
-        df.timeZone = TimeZone.getTimeZone("UTC")
         val cal = Calendar.getInstance()
+        df.timeZone = TimeZone.getTimeZone("UTC")
+        cal.timeZone = TimeZone.getTimeZone("UTC")
         cal.timeInMillis = entry.date!!
 
         val strHour: String =
@@ -95,73 +110,205 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
         holder.entryTime.text =
             ctx.getString(R.string.date_time_template, df.format(entry.date), strHour, strMinute)
 
-        holder.root.setOnClickListener {
-            holder.state = toggleDetailsView(entry, holder, holder.state)
+        if (hasDetails(entry, holder)) {
+            holder.root.setOnClickListener {
+                holder.state = toggleDetails(holder, holder.state)
+            }
+        } else {
+            holder.llDetailsShow.visibility = View.GONE
+        }
+
+
+        holder.entryComment.text = if (!entry.comment.isNullOrBlank()) {
+            entry.comment
+        } else {
+            ctx.getString(R.string.empty_comment)
         }
 
         when (entry.type) {
-            Entry.EntryType.ENTRY_FEEDING -> {
-                entry = entry as Feeding
+            Entry.EntryType.ENTRY_PICTURE -> {
+                entry = entry as Photo
 
-                holder.entryComment.text = entry.comment
+                holder.entryType.text = ctx.getString(R.string.photo)
+                holder.entryValue.text = ctx.getString(R.string.click_for_info)
+                holder.entryDescription.text = ""
                 holder.entryPic.setImageDrawable(
                     ContextCompat.getDrawable(
                         ctx,
-                        R.drawable.ic_baby_feeding
+                        R.drawable.ic_camera_add
                     )
                 )
-                if (entry.feedingType == Feeding.FeedingType.FEEDING_BOTTLE) {
-                    holder.entryDescription.text = ctx.getString(R.string.milliliters)
-                    holder.entryValue.text = ctx.getString(R.string.milliliters_template, entry.milliliters)
-                    holder.entryType.text = ctx.getString(R.string.feeding_bottle)
-                } else if (entry.feedingType == Feeding.FeedingType.FEEDING_BREAST) {
-                    if (entry.rightBreastTime == null) {
-                        entry.rightBreastTime = 0
-                    }
 
-                    if (entry.leftBreastTime == null) {
-                        entry.leftBreastTime = 0
-                    }
-                    val durationMin = entry.leftBreastTime!! + entry.rightBreastTime!!
-                    holder.entryLeftBreastTime.text = HtmlCompat.fromHtml(
+                holder.root.setOnClickListener {
+                    val intent = Intent(holder.root.context, PictureActivity::class.java)
+                    intent.putExtra(Photo.EXTRA_HAS_PHOTO, (entry as Photo).path != null)
+                    intent.putExtra(Photo.EXTRA_PATH, (entry as Photo).path)
+                    intent.putExtra(Photo.EXTRA_PHOTO, entry)
+                    holder.root.context.startActivity(intent)
+                }
+            }
+            Entry.EntryType.ENTRY_HEALTH -> {
+                entry = entry as Health
+
+                holder.entryType.text = ctx.getString(R.string.health)
+                holder.entryDescription.text = ""
+                holder.entryPic.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        ctx,
+                        R.drawable.ic_health_add
+                    )
+                )
+
+                val moodString = when (entry.mood) {
+                    Health.MOOD_BAD -> ctx.getString(R.string.bad_mood)
+                    Health.MOOD_NORMAL -> ctx.getString(R.string.normal_mood)
+                    Health.MOOD_GOOD -> ctx.getString(R.string.good_mood)
+                    else -> ctx.getString(R.string.not_selected)
+                }
+
+                holder.entryDescription.text = HtmlCompat.fromHtml(
+                    ctx.getString(R.string.health_mood, moodString),
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
+
+                holder.entryHealthCondition.text =
+                    HtmlCompat.fromHtml(
+                        ctx.getString(R.string.health_condition, entry.healthEvent),
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                    )
+                holder.entryHealthMed.text =
+                    HtmlCompat.fromHtml(
+                        ctx.getString(R.string.health_medication, entry.medication),
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                    )
+                holder.entryHealthQuantity.text =
+                    HtmlCompat.fromHtml(
                         ctx.getString(
-                            R.string.breast_left_time,
-                            entry.leftBreastTime.toString()
+                            R.string.health_med_quantity,
+                            entry.medAmount.toString()
                         ), HtmlCompat.FROM_HTML_MODE_LEGACY
                     )
-                    holder.entryRightBreast.text = HtmlCompat.fromHtml(
+                holder.entryHealthTemperature.text =
+                    HtmlCompat.fromHtml(
                         ctx.getString(
-                            R.string.breast_right_time,
-                            entry.rightBreastTime.toString()
-                        ), HtmlCompat.FROM_HTML_MODE_COMPACT
+                            R.string.health_temperature,
+                            entry.temperature.toString()
+                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
                     )
 
-                    holder.entryType.text = when (entry.feedingType) {
-                        Feeding.FeedingType.FEEDING_BREAST -> {
-                            ctx.getString(R.string.breast)
-                        }
-                        Feeding.FeedingType.FEEDING_BOTTLE -> {
-                            ctx.getString(R.string.feeding_bottle)
-                        }
-                        else -> {
-                            ctx.getString(R.string.food)
-                        }
+                var symptoms = ""
+                if (!entry.symptoms.isNullOrEmpty()) {
+                    entry.symptoms!!.forEach {
+                        symptoms += "$it, "
                     }
-                    holder.entryDescription.text = ctx.getString(R.string.sleep_duration)
-                    holder.entryValue.text = ctx.getString(R.string.duration_template, durationMin)
+                }
 
+                holder.entryHealthSymptoms.text = HtmlCompat.fromHtml(
+                    ctx.getString(R.string.health_symptoms, symptoms),
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
+
+                holder.entryHealthMood.text = HtmlCompat.fromHtml(
+                    ctx.getString(R.string.health_mood, moodString),
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
+            }
+            Entry.EntryType.ENTRY_FEEDING -> {
+                entry = entry as Feeding
+
+                holder.entryPic.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        ctx,
+                        R.drawable.ic_bottle
+                    )
+                )
+
+                holder.entryFoodType.text =
+                    HtmlCompat.fromHtml(
+                        ctx.getString(R.string.food_type_template, entry.foodType),
+                        HtmlCompat.FROM_HTML_MODE_COMPACT
+                    )
+
+
+                holder.entryType.text = when (entry.feedingType) {
+                    Feeding.FeedingType.FEEDING_BREAST -> {
+                        ctx.getString(R.string.breast)
+                    }
+                    Feeding.FeedingType.FEEDING_BOTTLE -> {
+                        ctx.getString(R.string.feeding_bottle)
+                    }
+                    else -> {
+                        ctx.getString(R.string.food)
+                    }
+                }
+
+                when (entry.feedingType) {
+                    Feeding.FeedingType.FEEDING_BOTTLE -> {
+                        holder.entryDescription.text = ctx.getString(R.string.milliliters)
+                        holder.entryPic.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                ctx,
+                                R.drawable.ic_bottle
+                            )
+                        )
+                        holder.entryValue.text =
+                            ctx.getString(R.string.milliliters_template, entry.milliliters)
+                    }
+                    Feeding.FeedingType.FEEDING_BREAST -> {
+                        holder.entryPic.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                ctx,
+                                R.drawable.breastfeeding
+                            )
+                        )
+                        if (entry.rightBreastTime == null) {
+                            entry.rightBreastTime = 0
+                        }
+
+                        if (entry.leftBreastTime == null) {
+                            entry.leftBreastTime = 0
+                        }
+                        val durationMin = entry.leftBreastTime!! + entry.rightBreastTime!!
+                        holder.entryLeftBreastTime.text = HtmlCompat.fromHtml(
+                            ctx.getString(
+                                R.string.breast_left_time,
+                                entry.leftBreastTime.toString()
+                            ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                        )
+                        holder.entryRightBreast.text = HtmlCompat.fromHtml(
+                            ctx.getString(
+                                R.string.breast_right_time,
+                                entry.rightBreastTime.toString()
+                            ), HtmlCompat.FROM_HTML_MODE_COMPACT
+                        )
+
+                        holder.entryDescription.text = ctx.getString(R.string.sleep_duration)
+                        holder.entryValue.text =
+                            ctx.getString(R.string.duration_template, durationMin)
+
+                    }
+                    else -> {
+                        holder.entryPic.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                ctx,
+                                R.drawable.ic_food
+                            )
+                        )
+                        holder.entryValue.text =
+                            ctx.getString(R.string.long_text_template, entry.foodType?.take(8))
+                    }
                 }
             }
             Entry.EntryType.ENTRY_SLEEP -> {
                 entry = entry as Sleep
                 holder.entryType.text = ctx.getString(R.string.sleep)
-                holder.entryValue.text = entry.duration.toString()
-                holder.entryComment.text = entry.comment
+                holder.entryDescription.text = ctx.getString(R.string.sleep_duration)
+                holder.entryValue.text = ctx.getString(R.string.duration_template, entry.duration)
 
                 holder.entryPic.setImageDrawable(
                     ContextCompat.getDrawable(
                         ctx,
-                        R.drawable.ic_sleep
+                        R.drawable.ic_sleep_add
                     )
                 )
             }
@@ -169,13 +316,13 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
                 entry = entry as Diaper
 
                 holder.entryType.text = ctx.getString(R.string.diaper)
+                holder.entryDescription.text = ctx.getString(R.string.diaper_state).replace(":", "")
                 holder.entryPic.setImageDrawable(
                     ContextCompat.getDrawable(
                         ctx,
-                        R.drawable.ic_diaper
+                        R.drawable.baby_diaper_change
                     )
                 )
-                holder.entryComment.text = entry.comment
 
                 holder.entryValue.text = when (entry.state) {
                     Diaper.STATE_DRY -> {
@@ -189,49 +336,34 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
                     }
                 }
             }
-            Entry.EntryType.ENTRY_HEALTH -> {
-                entry = entry as Health
-
-                holder.entryType.text = ctx.getString(R.string.health)
-                holder.entryPic.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        ctx,
-                        R.drawable.ic_health
-                    )
-                )
-                holder.entryComment.text = entry.comment
-
-                holder.entryHealthCondition.text = entry.healthEvent
-                holder.entryHealthMed.text = entry.medication
-                holder.entryHealthQuantity.text = entry.medAmount.toString()
-                holder.entryHealthTemperature.text = entry.temperature.toString()
-
-                var symptoms = ""
-                if (!entry.symptoms.isNullOrEmpty()) {
-                    entry.symptoms!!.forEach {
-                        symptoms += it + "\n"
-                    }
-                }
-
-                holder.entryHealthSymptoms.text = symptoms
-
-                holder.entryHealthMood.text = when (entry.mood) {
-                    Health.MOOD_BAD -> ctx.getString(R.string.bad_mood)
-                    Health.MOOD_NORMAL -> ctx.getString(R.string.normal_mood)
-                    Health.MOOD_GOOD -> ctx.getString(R.string.good_mood)
-                    else -> ctx.getString(R.string.error_short)
-                }
-            }
             Entry.EntryType.ENTRY_EVENT -> {
                 entry = entry as Event
 
                 holder.entryType.text = ctx.getString(R.string.event)
+                holder.entryValue.text = ctx.getString(R.string.see_details_for_more_info)
+                holder.entryDescription.text = ""
+                holder.entryActivityDetails.text = entry.activityType
                 holder.entryPic.setImageDrawable(
                     ContextCompat.getDrawable(
                         ctx,
-                        R.drawable.ic_activity
+                        R.drawable.ic_toy
                     )
                 )
+            }
+            Entry.EntryType.ENTRY_MEASUREMENT -> {
+                entry = entry as Measure
+
+                holder.entryType.text = ctx.getString(R.string.measure)
+                holder.entryDescription.text = ctx.getString(R.string.height_weight)
+                holder.entryValue.text =
+                    ctx.getString(R.string.measure_template, entry.height, entry.weight)
+                holder.entryPic.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        ctx,
+                        R.drawable.ic_measure
+                    )
+                )
+
             }
         }
 
@@ -239,6 +371,7 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
             Constants.VIEW_TYPE_TOP -> {
                 holder.entryLine.background =
                     ContextCompat.getDrawable(ctx, R.drawable.line_top_end)
+                (holder.entryLine.layoutParams as ConstraintLayout.LayoutParams).topMargin = 8
             }
             Constants.VIEW_TYPE_MIDDLE -> {
                 holder.entryLine.background =
@@ -249,34 +382,143 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
                     ContextCompat.getDrawable(ctx, R.drawable.line_bottom_end)
             }
         }
+
+        val dfDayMonth = SimpleDateFormat.getDateInstance(SimpleDateFormat.DEFAULT)
+        dfDayMonth.timeZone = TimeZone.getTimeZone("UTC")
+        if (position - 1 > -1) {
+            val prevDate = entryList[position - 1].date
+            val prevCal = Calendar.getInstance()
+            prevCal.timeZone = TimeZone.getTimeZone("UTC")
+            prevCal.timeInMillis = prevDate ?: 0
+            val previousDay = prevCal.get(Calendar.DAY_OF_MONTH)
+            if (cal.get(Calendar.DAY_OF_MONTH) != previousDay) {
+                holder.entryGroupDateTv.text = dfDayMonth.format(cal.time)
+                holder.entryGroupDateTv.visibility = View.VISIBLE
+            }
+        } else {
+            holder.entryGroupDateTv.text = dfDayMonth.format(cal.time)
+            holder.entryGroupDateTv.visibility = View.VISIBLE
+        }
     }
 
-    private fun toggleDetailsView(e: Entry, holder: EntryVH, status: Boolean): Boolean {
-        val visibility = if (!status) View.VISIBLE else View.GONE
-
+    private fun hasDetails(e: Entry, holder: EntryVH): Boolean {
         androidx.transition.TransitionManager.beginDelayedTransition(
             holder.root,
             androidx.transition.AutoTransition()
         )
-        if (e.type == Entry.EntryType.ENTRY_FEEDING) {
-            val entry = e as Feeding
 
-            if (!entry.comment.isNullOrBlank()) {
-                holder.detailsComment.visibility = visibility
-            }
-            holder.entryDetailsLayout.visibility = visibility
-            if (entry.feedingType == Feeding.FeedingType.FEEDING_BREAST) {
-                holder.entryBreastDetailsLayout.visibility = visibility
-            }
+        var hasDetails = false
 
-        } else if (e.type == Entry.EntryType.ENTRY_HEALTH) {
-            val entry = e as Health
-            if (!entry.comment.isNullOrBlank()) {
-                holder.detailsComment.visibility = visibility
-            }
-            holder.entryDetailsLayout.visibility = visibility
-            holder.entryHealthDetailsLayout.visibility = visibility
+        if (!e.comment.isNullOrEmpty()) {
+            hasDetails = true
         }
+
+        when (e.type) {
+            Entry.EntryType.ENTRY_SLEEP -> {
+                holder.entryDiaperDetails.visibility = View.GONE
+                holder.entryFoodType.visibility = View.GONE
+                holder.entryHealthDetailsLayout.visibility = View.GONE
+                holder.entryActivityDetails.visibility = View.GONE
+                holder.entryBreastDetailsLayout.visibility = View.GONE
+            }
+            Entry.EntryType.ENTRY_MEASUREMENT -> {
+                holder.entryDiaperDetails.visibility = View.GONE
+                holder.entryFoodType.visibility = View.GONE
+                holder.entryHealthDetailsLayout.visibility = View.GONE
+                holder.entryActivityDetails.visibility = View.GONE
+                holder.entryBreastDetailsLayout.visibility = View.GONE
+            }
+            Entry.EntryType.ENTRY_FEEDING -> {
+                val entry = e as Feeding
+
+                if (!entry.foodType.isNullOrEmpty()) {
+                    holder.entryFoodType.visibility = View.VISIBLE
+                    holder.entryFoodType.text = e.foodType
+                    holder.entryBreastDetailsLayout.visibility = View.GONE
+                    holder.entryHealthDetailsLayout.visibility = View.GONE
+                    holder.entryDiaperDetails.visibility = View.GONE
+                    holder.entryActivityDetails.visibility = View.GONE
+                    hasDetails = true
+                }
+
+                if (entry.feedingType == Feeding.FeedingType.FEEDING_BREAST) {
+                    holder.entryBreastDetailsLayout.visibility = View.VISIBLE
+                    holder.entryHealthDetailsLayout.visibility = View.GONE
+                    holder.entryDiaperDetails.visibility = View.GONE
+                    holder.entryFoodType.visibility = View.GONE
+                    holder.entryActivityDetails.visibility = View.GONE
+                    hasDetails = true
+                }
+            }
+            Entry.EntryType.ENTRY_DIAPER -> {
+                val entry = e as Diaper
+
+                if (!entry.diaperBrand.isNullOrEmpty()) {
+                    holder.entryDiaperBrand.text = entry.diaperBrand
+                    holder.entryDiaperDetails.visibility = View.VISIBLE
+                    holder.entryFoodType.visibility = View.GONE
+                    holder.entryHealthDetailsLayout.visibility = View.GONE
+                    holder.entryActivityDetails.visibility = View.GONE
+                    holder.entryBreastDetailsLayout.visibility = View.GONE
+                    hasDetails = true
+                }
+            }
+            Entry.EntryType.ENTRY_EVENT -> {
+                val entry = e as Event
+
+                if (!entry.activityType.isNullOrEmpty()) {
+                    holder.entryActivityDetails.text = entry.activityType
+                    holder.entryActivityDescription.visibility = View.VISIBLE
+                    holder.entryFoodType.visibility = View.GONE
+                    holder.entryHealthDetailsLayout.visibility = View.GONE
+                    holder.entryDiaperDetails.visibility = View.GONE
+                    holder.entryBreastDetailsLayout.visibility = View.GONE
+                    hasDetails = true
+                }
+            }
+            Entry.EntryType.ENTRY_HEALTH -> {
+                val entry = e as Health
+
+                if (!entry.symptoms.isNullOrEmpty()) {
+                    holder.entryHealthSymptoms.visibility = View.VISIBLE
+                }
+
+                if (!entry.medication.isNullOrEmpty()) {
+                    holder.entryHealthMed.visibility = View.VISIBLE
+                }
+
+                if (entry.medAmount != null) {
+                    holder.entryHealthQuantity.visibility = View.VISIBLE
+                }
+
+                if (entry.temperature != null) {
+                    holder.entryHealthTemperature.visibility = View.VISIBLE
+                }
+
+                if (entry.mood != null) {
+                    holder.entryHealthMood.visibility = View.VISIBLE
+                }
+
+                holder.entryHealthDetailsLayout.visibility = View.VISIBLE
+                holder.entryFoodType.visibility = View.GONE
+                holder.entryDiaperDetails.visibility = View.GONE
+                holder.entryActivityDetails.visibility = View.GONE
+                holder.entryBreastDetailsLayout.visibility = View.GONE
+
+                hasDetails = true
+            }
+        }
+
+        return hasDetails
+    }
+
+    private fun toggleDetails(holder: EntryVH, status: Boolean): Boolean {
+        val visibility = if (!status) View.VISIBLE else View.GONE
+
+        TransitionManager.beginDelayedTransition(holder.root, AutoTransition())
+
+        holder.entryDetailsLayout.visibility = visibility
+        holder.entryCommentLayout.visibility = visibility
 
         return !status
     }

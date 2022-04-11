@@ -10,7 +10,7 @@ class Measure(
     comment: String?,
     var height: Float?,
     var weight: Float?
-): Entry(
+) : Entry(
     id, date, type, comment
 ) {
     constructor(parcel: Parcel) : this(

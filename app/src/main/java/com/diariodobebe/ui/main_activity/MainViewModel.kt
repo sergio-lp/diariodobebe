@@ -1,4 +1,5 @@
 package com.diariodobebe.ui.main_activity
+
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel

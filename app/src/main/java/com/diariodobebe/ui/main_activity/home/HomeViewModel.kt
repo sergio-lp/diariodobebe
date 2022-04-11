@@ -1,6 +1,7 @@
-package com.diariodobebe.ui.home
+package com.diariodobebe.ui.main_activity.home
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.diariodobebe.models.*
 import com.google.gson.*
@@ -10,12 +11,18 @@ import java.lang.reflect.Type
 import java.nio.charset.StandardCharsets
 
 class HomeViewModel(val app: Application) : AndroidViewModel(app) {
+    private val step = 5
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
     var baby: Baby? = null
 
-    fun getEntries(entryList: MutableList<Entry>, entryIdList: MutableList<Int>) {
+    fun getEntries(
+        entryList: MutableList<Entry>,
+        entryIdList: MutableList<Int>,
+        lastIndex: Int
+    ): List<Int> {
         _isLoading.value = true
+        val returnList = mutableListOf<Int>()
         app.filesDir.listFiles { file ->
             if (file.extension == "json") {
                 val fileText = String(file.readBytes(), StandardCharsets.UTF_8)
@@ -25,22 +32,30 @@ class HomeViewModel(val app: Application) : AndroidViewModel(app) {
 
                 baby = gson.fromJson(fileText, Baby::class.java)
 
+                baby!!.entryList!!.sortByDescending { it.date }
 
-                val list = baby!!.entryList!!.sortedByDescending { it.date } as MutableList
 
-                for (entry in list) {
-                    if (!entryIdList.contains(entry.id)) {
-                        entryList.add(entry as Feeding)
+                for (i in lastIndex..(lastIndex + step)) {
+                    if (i < baby!!.entryList!!.size) {
+                        val entry = baby!!.entryList!![i]
+                        if (!entryIdList.contains(entry.id)) {
+                            entryList.add(entry)
+                            returnList.add(entryList.indexOf(entry))
+                            entryIdList.add(entry.id ?: 0)
+                        }
+                    } else {
+                        break
                     }
-
-                    entryIdList.add(entry.id ?: 0)
                 }
-            }
 
+                entryList.sortByDescending { it.date }
+            }
             return@listFiles true
         }
 
         _isLoading.value = false
+
+        return returnList
     }
 
     class Deserializer : JsonDeserializer<Baby> {
@@ -74,6 +89,9 @@ class HomeViewModel(val app: Application) : AndroidViewModel(app) {
                     }
                     Entry.EntryType.ENTRY_SLEEP -> {
                         entry = Gson().fromJson(e, Sleep::class.java)
+                    }
+                    Entry.EntryType.ENTRY_PICTURE -> {
+                        entry = Gson().fromJson(e, Photo::class.java)
                     }
                 }
 

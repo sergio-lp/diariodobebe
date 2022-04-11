@@ -12,9 +12,9 @@ class Health(
     var medAmount: Int?,
     var temperature: Int?,
     var mood: Int?,
-    var symptoms: Array<String>? = arrayOf()
+    var symptoms: Array<String>? = null
 ) : Entry(id, date, type, comment) {
-    constructor(parcel: Parcel): this(
+    constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readLong(),
         parcel.readInt(),
@@ -36,7 +36,7 @@ class Health(
         parcel.writeString(comment)
         parcel.writeString(healthEvent)
         parcel.writeString(medication)
-        parcel.writeInt(medAmount?: 0)
+        parcel.writeInt(medAmount ?: 0)
         parcel.writeInt(temperature ?: 0)
         parcel.writeInt(mood ?: 0)
         parcel.writeStringArray(symptoms)

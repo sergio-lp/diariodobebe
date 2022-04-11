@@ -1,304 +1,373 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:fitsSystemWindows="true"
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.main_activity.home.HomeFragment">
 
-    <RelativeLayout
-        android:id="@+id/rv_root"
+    <FrameLayout
+        android:id="@+id/mask_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:foreground="@color/color_transparent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_baby_timeline"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:padding="16dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_sv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <RelativeLayout
+                    android:id="@+id/rv_root"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:indeterminateTint="@color/colorPrimaryDarker" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_baby_timeline"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:nestedScrollingEnabled="true"
+                        android:paddingBottom="120dp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_no_baby"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/text_no_baby"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/no_baby_added"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Button
+                            android:id="@+id/btn_add_baby"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/add_baby"
+                            android:textAllCaps="true" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_no_entry"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/text_no_entry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/no_entry_added"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Button
+                            android:id="@+id/btn_add_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/add_entry"
+                            android:textAllCaps="true" />
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        app:adSize="SMART_BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/adView"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/add_entry"
+        app:icon="@drawable/ic_add_animated_open" />
+
+    <LinearLayout
+        android:id="@+id/fab_expanded_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/fab"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
-            android:id="@+id/ll_no_baby"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/text_no_baby"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/no_baby_added"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btn_add_baby"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/add_baby"
-                android:textAllCaps="true" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_no_entry"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/text_no_entry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/no_entry_added"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btn_add_entry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/add_entry"
-                android:textAllCaps="true" />
-
-
-        </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/add_entry"
-            app:icon="@drawable/ic_add_animated_open" />
+            android:layout_gravity="end"
+            android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/fab_expanded_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/fab"
-            android:layout_alignParentEnd="true"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <LinearLayout
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_feeding"
+                style="@style/Widget.Material3.Chip.Suggestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:orientation="horizontal">
+                android:text="@string/feeding"
+                app:chipBackgroundColor="@color/colorPrimary"
+                app:chipStrokeWidth="0dp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_feeding"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/feeding"
-                    app:chipBackgroundColor="@color/colorPrimary"
-                    app:chipStrokeWidth="0dp" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_add_feeding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="@dimen/fab_margin"
-                    android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:src="@drawable/ic_baby_feeding"
-                    android:visibility="visible"
-                    app:fabSize="mini" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_feeding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:orientation="horizontal">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_diaper"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/diaper"
-                    app:chipBackgroundColor="@color/colorPrimary"
-                    app:chipStrokeWidth="0dp" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_add_diaper"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/fab_margin"
-                    android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:contentDescription="@string/diaper"
-                    android:src="@drawable/ic_diaper"
-                    android:visibility="visible"
-                    app:fabSize="mini" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:orientation="horizontal">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_measure"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/measure"
-                    app:chipBackgroundColor="@color/colorPrimary"
-                    app:chipStrokeWidth="0dp" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_add_measure"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="@dimen/fab_margin"
-                    android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:src="@drawable/ic_ruler"
-                    android:visibility="visible"
-                    app:fabSize="mini" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:orientation="horizontal">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_sleep"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sleep"
-                    app:chipBackgroundColor="@color/colorPrimary"
-                    app:chipStrokeWidth="0dp" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_add_sleep"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="@dimen/fab_margin"
-                    android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:src="@drawable/ic_sleep"
-                    android:visibility="visible"
-                    app:fabSize="mini" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:orientation="horizontal">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_health"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/health"
-                    app:chipBackgroundColor="@color/colorPrimary"
-                    app:chipStrokeWidth="0dp" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_add_health"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="@dimen/fab_margin"
-                    android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:src="@drawable/ic_health"
-                    android:visibility="visible"
-                    app:fabSize="mini" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:orientation="horizontal">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_activity"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/event"
-                    app:chipBackgroundColor="@color/colorPrimary"
-                    app:chipStrokeWidth="0dp" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_add_activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="@dimen/fab_margin"
-                    android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:src="@drawable/baby_main"
-                    android:visibility="visible"
-                    app:fabSize="mini" />
-
-            </LinearLayout>
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_baby_feeding"
+                android:visibility="visible"
+                app:fabSize="mini" />
 
         </LinearLayout>
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
 
-</androidx.core.widget.NestedScrollView>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_diaper"
+                style="@style/Widget.Material3.Chip.Suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/diaper"
+                app:chipBackgroundColor="@color/colorPrimary"
+                app:chipStrokeWidth="0dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_diaper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="@string/diaper"
+                android:src="@drawable/ic_diaper"
+                android:visibility="visible"
+                app:fabSize="mini" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_measure"
+                style="@style/Widget.Material3.Chip.Suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/measure"
+                app:chipBackgroundColor="@color/colorPrimary"
+                app:chipStrokeWidth="0dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_measure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_ruler"
+                android:visibility="visible"
+                app:fabSize="mini" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_sleep"
+                style="@style/Widget.Material3.Chip.Suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sleep"
+                app:chipBackgroundColor="@color/colorPrimary"
+                app:chipStrokeWidth="0dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_sleep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_sleep"
+                android:visibility="visible"
+                app:fabSize="mini" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_health"
+                style="@style/Widget.Material3.Chip.Suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/health"
+                app:chipBackgroundColor="@color/colorPrimary"
+                app:chipStrokeWidth="0dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_health"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_health"
+                android:visibility="visible"
+                app:fabSize="mini" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_activity"
+                style="@style/Widget.Material3.Chip.Suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event"
+                app:chipBackgroundColor="@color/colorPrimary"
+                app:chipStrokeWidth="0dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/baby_main"
+                android:visibility="visible"
+                app:fabSize="mini" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_picture"
+                style="@style/Widget.Material3.Chip.Suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/photo"
+                app:chipBackgroundColor="@color/colorPrimary"
+                app:chipStrokeWidth="0dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_camera"
+                android:visibility="visible"
+                app:fabSize="mini" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

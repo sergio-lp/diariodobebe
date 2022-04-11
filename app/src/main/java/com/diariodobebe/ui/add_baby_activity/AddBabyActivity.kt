@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
@@ -22,6 +21,7 @@ import com.diariodobebe.ui.main_activity.MainActivity
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import java.io.File
@@ -120,7 +120,7 @@ class AddBabyActivity : AppCompatActivity() {
 
         binding.btnBabyPic.setOnClickListener {
             try {
-                val intent = Intent(Intent.ACTION_PICK)
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.type = "image/*"
                 registerForResult.launch(intent)
             } catch (e: Exception) {
@@ -175,7 +175,7 @@ class AddBabyActivity : AppCompatActivity() {
                 mutableListOf()
             )
 
-            val picFile = File (filesDir, baby.name!!.replace(" ", "-")+".png")
+        val picFile = File(filesDir, baby.name!!.replace(" ", "-") + ".png")
 
         if (this.picBitmap != null) {
             baby.picPath = picFile.path
@@ -187,7 +187,7 @@ class AddBabyActivity : AppCompatActivity() {
         }
 
         if (picBitmap == null) {
-            AlertDialog.Builder(this)
+            MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.no_pic_warning))
                 .setMessage(getString(R.string.no_pic_message, baby.name))
                 .setCancelable(true)
@@ -209,21 +209,25 @@ class AddBabyActivity : AppCompatActivity() {
         val gson = Gson()
         val json = gson.toJson(baby)
 
-        val file = File(
-            filePath, baby.name.toString()
-                .replace(" ", "-")
-                .replace("-", "") + ".json"
-        )
+        try {
+            val file = File(
+                filePath, baby.name.toString()
+                    .replace(" ", "-")
+                    .replace("-", "") + ".json"
+            )
 
-        file.writeText(json, StandardCharsets.UTF_8)
-        Toast.makeText(this, getString(R.string.baby_insert_success), Toast.LENGTH_SHORT)
-            .show()
-        getSharedPreferences(getString(R.string.PREFS), Context.MODE_PRIVATE).edit {
-            putString("baby", baby.name!!)
-            apply()
+            file.writeText(json, StandardCharsets.UTF_8)
+            Toast.makeText(this, getString(R.string.baby_insert_success), Toast.LENGTH_SHORT)
+                .show()
+            getSharedPreferences(getString(R.string.PREFS), Context.MODE_PRIVATE).edit {
+                putString("baby", baby.name!!)
+                apply()
+            }
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        } catch (e: Exception) {
+            Toast.makeText(this, getString(R.string.baby_insert_error), Toast.LENGTH_SHORT).show()
         }
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
     }
 
     private fun insertBabyPic(bitmap: Bitmap, file: File) {

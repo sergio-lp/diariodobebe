@@ -1,9 +1,8 @@
 <resources>
-    <string name="app_name">Diário do Bebe</string>
+    <string name="app_name">Baby Journal</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="menu_gallery">Gallery</string>
 
     <string name="PREFS" translatable="false">PREFS</string>
     <string name="PREF_OPENED" translatable="false">PREF_OPENED</string>
@@ -11,27 +10,26 @@
     <string name="menu_home">Home</string>
     <string name="menu_premium">Premium</string>
     <string name="support_email">suporte@email.com</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_save">Export</string>
     <string name="welcome">Welcome!</string>
     <string name="welcome_description">If you want to track everything about your newborn baby, you\'re in the right place!</string>
     <string name="lets_go">Let\'s go!</string>
     <string name="app_features">Here you\'ll be able to register your baby\'s feeding sessions, measurements, pictures, health events and more! Hit the next button and let\'s go!</string>
     <string name="expand_entry_view">Details</string>
-    <string name="breast_left_time"><![CDATA[<b>Left breast:</b><br><br>%1$s minutes]]></string>
-    <string name="breast_right_time"><![CDATA[<b>Right breast:</b><br><br>%1$s minutes]]></string>
-    <string name="health_condition">Condition: %1$s</string>
-    <string name="health_medication">Medication: %1$s</string>
-    <string name="health_temperature">Temperature: %1$s</string>
-    <string name="health_med_quantity">Amount: %1$s</string>
-    <string name="health_symptoms">Symptoms %1$s</string>
+    <string name="breast_left_time"><![CDATA[<b>Left breast:</b><br>%1$s minutes]]></string>
+    <string name="health_condition"><![CDATA[<b>Condition:</b> %1$s]]></string>
+    <string name="health_medication"><![CDATA[<b>Medication:</b> %1$s]]></string>
+    <string name="health_temperature"><![CDATA[<b>Temperature:</b> %1$s °C]]></string>
+    <string name="health_med_quantity"><![CDATA[<b>Amount:</b> %1$s]]></string>
+    <string name="health_symptoms"><![CDATA[<b>Symptoms:</b> %1$s]]></string>
     <string name="entry_comment">Comment</string>
-    <string name="health_mood">Mood: %1$s</string>
+    <string name="health_mood"><![CDATA[<b>Mood:</b> %1$s]]></string>
     <string name="entry_time">Start: %1$s - End: %2$s</string>
     <string name="menu_rate">Rate us</string>
     <string name="menu_about">About</string>
     <string name="menu_other_apps">Our other apps</string>
     <string name="menu_web">Blog</string>
-    <string name="sleep_report">Sleeping report</string>
+    <string name="sleep_report">Sleep report</string>
     <string name="feeding_report">Feeding report</string>
     <string name="sleep">Sleep</string>
     <string name="sleep_duration">Duration</string>
@@ -51,7 +49,7 @@
     <string name="sex_not_set">Select the baby\'s sex in the buttons above</string>
     <string name="select_baby_name">Please input your baby\'s name</string>
     <string name="select_baby_birth">Please input your baby\'s birthdate</string>
-    <string name="no_pic_warning">Are you sure?</string>
+    <string name="no_pic_warning">Are you sure you want to continue without a picture?</string>
     <string name="no_pic_message">You have not provided any picture for %1$s. Do you want to save your baby without a photo?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -62,7 +60,7 @@
     <string name="diaper">Diaper</string>
     <string name="measure">Measurement</string>
     <string name="health">Health event</string>
-    <string name="event">Event</string>
+    <string name="event">Activity</string>
     <string name="be_premium">Be Premium!</string>
     <string name="premium_desc">• Gain lifetime access to Premium features!\n\n• Stop seeing annoying ads!\n\n• Gain Premium class support from our team!\n\n• Support the app developers!</string>
     <string name="premium_description">By being Premium, you will:</string>
@@ -71,20 +69,19 @@
     <string name="billing_api_error">An error occurred when connecting to the billing service.</string>
     <string name="rating_api_error">An error occurred when connecting to the rating service.</string>
     <string name="send_email">Support</string>
-    <string name="blog_url">https://www.google.com</string>
+    <string name="blog_url" translatable="false">https://www.google.com</string>
     <string name="support_email_subject">[Baby Journal] Support</string>
     <string name="add_feeding">Add feeding entry</string>
-    <string name="time_feeding_start">Time of feeding start</string>
-    <string name="time_feeding_end">Time of feeding end</string>
-    <string name="feeding_date">Feeding date</string>
-    <string name="breast_left_hint">Left breast time (in minutes)</string>
-    <string name="breast_right_hint">Right breast time (in minutes)</string>
+    <string name="pick_time_hint">Pick a time</string>
+    <string name="date_hint">Pick a date</string>
+    <string name="breast_left_hint">Left breast time\n(minutes):</string>
+    <string name="breast_right_hint">Right breast time\n(minutes):</string>
     <string name="comment_hint">Comment (optional)</string>
     <string name="please_fill_field">Please fill this field</string>
     <string name="please_fill_one">Please fill at least one breast time</string>
-    <string name="template_hour">%1$s:%2$s</string>
+    <string name="template_hour" translatable="false">%1$s:%2$s</string>
     <string name="baby_insert_success">Your baby has been successfully added!</string>
-    <string name="activity_insert_successful">Your journal entry has been inserted!</string>
+    <string name="entry_insert_successful">Your journal entry has been inserted!</string>
     <string name="please_add_baby">Please add your baby data to start using the journal!</string>
     <string name="duration_template">%1$d minutes</string>
     <string name="diaper_dry">Dry</string>
@@ -94,14 +91,109 @@
     <string name="normal_mood">Normal</string>
     <string name="good_mood">Good</string>
     <string name="error_short">Error</string>
-    <string name="date_time_template">%1$s %2$s:%3$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="date_time_template" translatable="false">%1$s %2$s:%3$s</string>
     <string name="bottle_milliliters_hint">Quantity (mL)</string>
     <string name="please_inform_milliliters">Please inform the quantity that was fed to your baby (milliliters).</string>
     <string name="milliliters">Milliliters</string>
-    <string name="milliliters_template">%1$d mL</string>
+    <string name="milliliters_template" translatable="false">%1$d mL</string>
     <string name="food_type_hint">Food type</string>
     <string name="no_food_type_alert">No food type</string>
     <string name="no_food_type_message">You have not informed any food type, would you like to continue like that?</string>
+    <string name="long_text_template" translatable="false">%1$s…</string>
+    <string name="food_type_template"><![CDATA[<b>Food type</b><br> %1$s]]></string>
+    <string name="empty_comment">No comment</string>
+    <string name="measure_date">Measurement date</string>
+    <string name="measure_time">Measurement time</string>
+    <string name="measure_weight">Weight (kg)</string>
+    <string name="measure_height">Height (cm)</string>
+    <string name="measure_template">Height: %1$.2fcm\nWeight: %2$.2fkg</string>
+    <string name="add_measurement">Add measurement entry</string>
+    <string name="add_diaper">Add diaper change</string>
+    <string name="diaper_date">Diaper change date</string>
+    <string name="diaper_time">Diaper change time</string>
+    <string name="diaper_brand">Brand or type of diaper (optional)</string>
+    <string name="add_sleep">Add sleep entry</string>
+    <string name="sleep_date">Sleep date</string>
+    <string name="sleep_time">Sleep time</string>
+    <string name="sleep_duration_hint">Duration (minutes)</string>
+    <string name="event_date">Activity date</string>
+    <string name="event_time">Activity time</string>
+    <string name="event_type_hint">Activity description</string>
+    <string name="add_event">Add activity</string>
+    <string name="add_health">Add health entry</string>
+    <string name="condition">Health condition</string>
+    <string name="medication">Medication</string>
+    <string name="vital_signs">Vital signs</string>
+    <string name="health_date">Health event date</string>
+    <string name="health_time">Health event time</string>
+    <string name="health_duration_hint">Health condition description</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="add_symptom">Add symptom</string>
+    <string name="symptoms">Symptoms (optional)</string>
+    <string name="symptom">Symptom description</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_symptom_added">No symptom added</string>
+    <string name="med_name">Medication name (optional)</string>
+    <string name="med_amount">Medication amount (optional)</string>
+    <string name="vitals_temperature">Temperature (°C) (optional)</string>
+    <string name="mood_selector">Baby mood (optional): %1$s</string>
+    <string name="not_selected">Not selected</string>
+    <string name="field_empty">Do you want to continue?</string>
+    <string name="field_empty_template">You have not added any value to the %1$s field. Are you sure you want to continue like that?</string>
+    <string name="baby_mood">Baby mood</string>
+    <string name="temperature">temperature</string>
+    <string name="diaper_state">Diaper state:</string>
+    <string name="delete_confirmation_title">Do you want to delete this symptom?</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete this symptom?</string>
+    <string name="see_details_for_more_info">See details</string>
+    <string name="activity_description">Activity description</string>
+    <string name="height_weight">Height/weight</string>
+    <string name="diaper_brand_hint">Diaper brand or type</string>
+
+    <string-array name="diaper_states">
+        <item>Dry</item>
+        <item>Pee</item>
+        <item>Poop</item>
+    </string-array>
+    <string name="breast_right_time"><![CDATA[<b>Right breast:</b><br>%1$s minutes]]></string>
+    <string name="sleep_report_desc">Hey there!\n\nHere you can download a PDF document with all your baby sleep data! Click the button below if you\'d like to do so!</string>
+    <string name="download_pdf">Download PDF</string>
+    <string name="feeding_report_desc">Hey there!\n\nHere you can download a PDF document with all your baby feeding data! Click the button below if you\'d like to do so!</string>
+    <string name="baby_name_template" translatable="false">%1$s</string>
+    <string name="baby_age_template" translatable="false">%1$s</string>
+    <string name="sleep_entry">Number of sleep entries</string>
+    <string name="feeding_entry">Number of feeding entries</string>
+    <string name="total_sleep_time">Total sleep time</string>
+    <string name="avg_sleep_time">Average sleep time in each entry</string>
+    <string name="minutes"> minutes</string>
+    <string name="success_report">Your report has been successfully exported to the Downloads folder!</string>
+    <string name="sleep_entry_count">Total sleep entry count: %1$s</string>
+    <string name="support_desc">If you need any help, feel free to get in touch in the support e-mail. Remember: Premium users have Premium support!</string>
+    <string name="credits">Credits</string>
+    <string name="credits_desc">Credits for the icon, app development, and more!</string>
+    <string name="OK">OK</string>
+    <string name="baby_insert_error">An error occurred when saving your baby! Please don\'t use special characters.</string>
+    <string name="add_picture">Add photo</string>
+    <string name="picture_date">Date of photo</string>
+    <string name="picture_time" translatable="false">Time of photo</string>
+    <string name="take_picture_hint">Click to select a photo</string>
+    <string name="no_pic_added">You have not added a photo!</string>
+    <string name="photo">Photo</string>
+    <string name="click_for_info">Click to view</string>
+    <string name="pic_date_template">Taken at: %1$s</string>
+    <string name="notification_channel_desc">Reminders to open the app and register your baby\'s daily life!</string>
+    <string name="notification_title_template">Hello there!</string>
+    <string name="notification_message_template">It\'s been %1$d days since you\'ve registered any activity for your baby! Is everything alright? Return to the app and register your baby routine!</string>
+    <string name="PREFS_NOTIFICATIONS_IDS" translatable="false">notificationsIds</string>
+    <string name="you_are_premium">You are Premium!</string>
+    <string name="premium_thanks">Thanks for supporting the app development! Enjoy your ad-free, limitless experience!</string>
+    <string name="PREMIUM" translatable="false">isPremium</string>
+    <string name="action_import">Import</string>
+    <string name="success_export">Your baby data has been exported successfully to %1$s</string>
+    <string name="success_import" translatable="false">Importado com sucesso!</string>
+    <string name="premium_only">This feature is available only for Premium users!</string>
+    <string name="no_permission">Unable to complete action because of permission lack</string>
+    <string name="view_photo">View photo</string>
+    <string name="click_to_view">Touch here to view photo in fullscreen</string>
 </resources>

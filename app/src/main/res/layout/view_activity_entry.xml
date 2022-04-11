@@ -3,233 +3,319 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
-    <FrameLayout
-        android:id="@+id/layout_entry_line"
-        android:layout_width="15dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/line_top_end"
-        android:paddingTop="2dp">
-
-        <View
-            android:layout_width="11dp"
-            android:layout_height="11dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/circle" />
-    </FrameLayout>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/root"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_entry_day"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        android:layout_marginStart="16dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <ImageView
-                    android:id="@+id/img_activity_type"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/oval_background"
-                    android:padding="8dp"
-                    app:layout_constraintEnd_toStartOf="@id/tv_entry_type"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_entry_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/img_activity_type"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_entry_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_entry_type"
-                    android:layout_marginTop="4dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/tv_entry_type" />
-
-                <TextView
-                    android:id="@+id/tv_entry_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_entry_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/layout_entry_line"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/line_top_end"
+            android:paddingTop="2dp"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="0.8dp"
-                android:background="#cdcdcd" />
+                android:layout_width="11dp"
+                android:layout_height="11dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circle" />
+        </FrameLayout>
 
-            <RelativeLayout
-                android:id="@+id/ll_details_show"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="16dp">
-
-                <ImageView
-                    android:id="@+id/img_entry_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="26dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="16dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_toStartOf="@id/img_entry_details"
-                    android:text="@string/expand_entry_view"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="24dp"
+            android:animateLayoutChanges="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/layout_entry_line"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/ll_entry_details_comment"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingBottom="4dp"
-                android:visibility="gone">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/feeding_entry_details"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/img_activity_type"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignParentStart="true"
+                        android:background="@drawable/oval_background"
+                        android:padding="10dp" />
 
                     <TextView
-                        android:id="@+id/tv_right_breast_time"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/breast_right_time" />
-
-                    <TextView
-                        android:id="@+id/tv_left_breast_time"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/breast_left_time" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/health_entry_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/tv_health_entry_condition"
+                        android:id="@+id/tv_entry_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/health_condition" />
-
-                    <TextView
-                        android:id="@+id/tv_health_entry_symptoms"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/health_symptoms" />
-
-                    <TextView
-                        android:id="@+id/tv_health_entry_mood"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/health_mood" />
-
-                    <TextView
-                        android:id="@+id/tv_health_entry_med"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/health_medication" />
-
-                    <TextView
-                        android:id="@+id/tv_health_entry_quantity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/health_med_quantity" />
-
-                    <TextView
-                        android:id="@+id/tv_health_entry_temperature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/health_temperature" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/entry_comment"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/img_activity_type"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_entry_comment"
+                        android:id="@+id/tv_entry_time"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_below="@id/tv_entry_type"
+                        android:layout_marginTop="21.5dp"
+                        android:layout_toEndOf="@id/img_activity_type" />
+
+                    <TextView
+                        android:id="@+id/tv_entry_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toEndOf="@id/tv_entry_type"
+                        android:textAlignment="textEnd"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_entry_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_entry_description"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="21.5dp"
+                        android:layout_toEndOf="@id/tv_entry_time"
+                        android:textAlignment="textEnd"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_entry_time" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.2dp"
+                    android:background="#B5DCDCDC" />
+
+                <RelativeLayout
+                    android:id="@+id/ll_details_show"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp">
+
+                    <ImageView
+                        android:id="@+id/img_entry_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="26dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_toStartOf="@id/img_entry_details"
+                        android:text="@string/expand_entry_view"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_entry_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/ll_activity_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/activity_description"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_activity_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/feeding_entry_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_right_breast_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/breast_right_time" />
+
+                        <TextView
+                            android:id="@+id/tv_left_breast_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/breast_left_time" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/health_entry_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_health_entry_condition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/health_condition" />
+
+                        <TextView
+                            android:id="@+id/tv_health_entry_symptoms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/health_symptoms" />
+
+                        <TextView
+                            android:id="@+id/tv_health_entry_mood"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/health_mood" />
+
+                        <TextView
+                            android:id="@+id/tv_health_entry_med"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/health_medication" />
+
+                        <TextView
+                            android:id="@+id/tv_health_entry_quantity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/health_med_quantity" />
+
+                        <TextView
+                            android:id="@+id/tv_health_entry_temperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/health_temperature" />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_feeding_food_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/food_type_template"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_diaper_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/diaper_brand_hint"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_diaper_brand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/entry_comment"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_entry_comment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

@@ -18,4 +18,6 @@
     <color name="colorGenderMaleUnselected">#C3D6EDFF</color>
     <color name="colorGenderMaleSelected">#348FD6</color>
     <color name="colorGenderFemaleSelected">#D66C6C</color>
+    <color name="color_mask">#C92B2B2B</color>
+    <color name="color_transparent">#004A4A4A</color>
 </resources>

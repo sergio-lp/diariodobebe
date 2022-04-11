@@ -9,14 +9,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddFeedingBinding
-import com.diariodobebe.models.Baby
-import com.diariodobebe.ui.home.HomeFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class AddFeedingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddFeedingBinding
-    private var baby: Baby? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,25 +22,21 @@ class AddFeedingActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        baby = intent.extras.takeIf { it != null }!!.getParcelable(HomeFragment.EXTRAS.EXTRA_BABY)
-
         val fragmentList = mutableListOf<Fragment>()
         fragmentList.add(BreastFragment())
         fragmentList.add(BottleFragment())
+        fragmentList.add(FoodFragment())
 
         binding.viewPager.adapter =
             FeedingPagerAdapter(fragmentList, supportFragmentManager, lifecycle)
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, pos ->
             when (pos) {
-                1 -> tab.text = getString(R.string.breast)
+                0 -> tab.text = getString(R.string.breast)
+                1 -> tab.text = getString(R.string.feeding_bottle)
+                2 -> tab.text = getString(R.string.food)
             }
         }.attach()
-
-
-        baby = intent.extras.takeIf { it != null }!!
-            .getParcelable(HomeFragment.EXTRAS.EXTRA_BABY)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,7 +52,7 @@ class AddFeedingActivity : AppCompatActivity() {
         lifecycle: Lifecycle
     ) : FragmentStateAdapter(fragManager, lifecycle) {
         override fun getItemCount(): Int {
-            return 1
+            return fragmentList.size
         }
 
         override fun createFragment(position: Int): Fragment {
