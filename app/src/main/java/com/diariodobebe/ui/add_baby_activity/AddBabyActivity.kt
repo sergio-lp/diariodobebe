@@ -6,6 +6,7 @@ import android.graphics.*
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,9 +16,12 @@ import androidx.core.content.edit
 import androidx.core.graphics.drawable.toBitmap
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddBabyBinding
+import com.diariodobebe.helpers.PremiumStatus
 import com.diariodobebe.models.Baby
 import com.diariodobebe.ui.IntroActivity
 import com.diariodobebe.ui.main_activity.MainActivity
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -139,6 +143,13 @@ class AddBabyActivity : AppCompatActivity() {
             } else {
                 checkBabyData(binding.edBabyName, binding.edBabyBirthdate)
             }
+        }
+
+        if (PremiumStatus.isPremium(this)) {
+            PremiumStatus.processPremium(binding.adView, binding.root)
+        } else {
+            MobileAds.initialize(this)
+            binding.adView.loadAd(AdRequest.Builder().build())
         }
     }
 

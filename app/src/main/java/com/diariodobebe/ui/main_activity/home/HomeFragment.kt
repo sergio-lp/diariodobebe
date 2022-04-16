@@ -2,7 +2,6 @@ package com.diariodobebe.ui.main_activity.home
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
@@ -25,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.diariodobebe.R
 import com.diariodobebe.adapters.EntryAdapter
 import com.diariodobebe.databinding.FragmentHomeBinding
+import com.diariodobebe.helpers.PremiumStatus
 import com.diariodobebe.models.Entry
 import com.diariodobebe.models.Photo
 import com.diariodobebe.ui.add_baby_activity.AddBabyActivity
@@ -78,6 +78,13 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         MainScope().launch {
+            binding.swipeRefresh.setOnRefreshListener {
+                MainScope().launch {
+                    delay(600)
+                    binding.swipeRefresh.isRefreshing = false
+                }
+            }
+
             binding.btnAddBaby.setOnClickListener {
                 startActivity(Intent(activity, AddBabyActivity::class.java))
             }
@@ -91,6 +98,12 @@ class HomeFragment : Fragment() {
                 binding.fab.performClick()
             }
 
+            if (PremiumStatus.isPremium(requireContext())) {
+                processPremium()
+            } else {
+                MobileAds.initialize(requireContext())
+                binding.adView.loadAd(AdRequest.Builder().build())
+            }
         }
 
         premiumViewModel = PremiumViewModel(requireActivity().application)
@@ -211,7 +224,13 @@ class HomeFragment : Fragment() {
         entryList = mutableListOf()
         entryIdList = mutableListOf()
         MainScope().launch {
-            viewModel.getEntries(entryList, entryIdList, 0)
+            if (binding.adView.visibility == View.VISIBLE) {
+                if (PremiumStatus.isPremium(requireContext())) {
+                    processPremium()
+                }
+            }
+
+            viewModel.getEntries(entryList, entryIdList, 0, binding.root)
             while (viewModel.isLoading.value) {
                 continue
             }
@@ -253,16 +272,20 @@ class HomeFragment : Fragment() {
                 if (scrollY == ((v.getChildAt(0).measuredHeight - v.measuredHeight))) {
                     binding.swipeRefresh.isRefreshing = true
                     MainScope().launch {
-                            val addedList = viewModel.getEntries(
-                                entryList,
-                                entryIdList,
-                                ((binding.rvBabyTimeline.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                            )
+                        val lastItem =
+                            ((binding.rvBabyTimeline.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+
+                        val addedList =
+                            viewModel.getEntries(entryList, entryIdList, lastItem, binding.root)
                         delay(800)
-                        for (i in addedList) {
-                            (binding.rvBabyTimeline.adapter as EntryAdapter).notifyItemInserted(i)
-                        }
+
+                        (binding.rvBabyTimeline.adapter as EntryAdapter).notifyItemRangeInserted(
+                            entryList.size - 1,
+                            addedList.size
+                        )
+
                         binding.swipeRefresh.isRefreshing = false
+
                     }
                 }
 
@@ -286,20 +309,13 @@ class HomeFragment : Fragment() {
         }
 
         premiumViewModel.checkPurchases()
-
-        if (requireContext().getSharedPreferences(getString(R.string.PREFS), Context.MODE_PRIVATE)
-                .getBoolean(getString(R.string.PREMIUM), false)
-        ) {
-            processPremium()
-        } else {
-            MobileAds.initialize(requireContext())
-            binding.adView.loadAd(AdRequest.Builder().build())
-        }
     }
 
     private fun processPremium() {
         binding.adView.visibility = View.GONE
         (binding.fab.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        (binding.fab.layoutParams as RelativeLayout.LayoutParams).removeRule(RelativeLayout.ABOVE)
+        binding.root.removeView(binding.adView)
     }
 
     override fun onDestroyView() {

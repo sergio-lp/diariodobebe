@@ -1,25 +1,37 @@
 package com.diariodobebe.ui.main_activity.home
 
 import android.app.Application
+import android.content.Intent
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
+import com.diariodobebe.R
+import com.diariodobebe.helpers.PremiumStatus
 import com.diariodobebe.models.*
+import com.diariodobebe.ui.main_activity.EmptyActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.lang.reflect.Type
 import java.nio.charset.StandardCharsets
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class HomeViewModel(val app: Application) : AndroidViewModel(app) {
-    private val step = 5
+    private val step = 10
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
     var baby: Baby? = null
 
+    private val DIAS_PARA_VERSAO_FREE: Int = 10 //DIAS QUE USUÁRIO FREE PODE VER NO DIÁRIO
+
+
     fun getEntries(
         entryList: MutableList<Entry>,
         entryIdList: MutableList<Int>,
-        lastIndex: Int
+        lastIndex: Int,
+        view: View
     ): List<Int> {
         _isLoading.value = true
         val returnList = mutableListOf<Int>()
@@ -34,14 +46,40 @@ class HomeViewModel(val app: Application) : AndroidViewModel(app) {
 
                 baby!!.entryList!!.sortByDescending { it.date }
 
-
                 for (i in lastIndex..(lastIndex + step)) {
                     if (i < baby!!.entryList!!.size) {
                         val entry = baby!!.entryList!![i]
                         if (!entryIdList.contains(entry.id)) {
-                            entryList.add(entry)
-                            returnList.add(entryList.indexOf(entry))
-                            entryIdList.add(entry.id ?: 0)
+                            if (!PremiumStatus.isPremium(app)) {
+                                val today = Calendar.getInstance()
+                                val diffInMillis = today.timeInMillis - (entry.date!!)
+                                val diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis)
+
+                                if (diffInDays <= DIAS_PARA_VERSAO_FREE) {
+                                    entryList.add(entry)
+                                    returnList.add(entryList.indexOf(entry))
+                                    entryIdList.add(entry.id ?: 0)
+                                } else {
+                                    Snackbar.make(
+                                        view,
+                                        app.getString(R.string.free_day_limit_warning, DIAS_PARA_VERSAO_FREE),
+                                        Snackbar.LENGTH_LONG
+                                    ).setAction(app.getString(R.string.be_premium)) {
+                                        val intent = Intent(app, EmptyActivity::class.java)
+                                        intent.putExtra(
+                                            EmptyActivity.FRAGMENT,
+                                            EmptyActivity.PREMIUM
+                                        )
+                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                        app.startActivity(intent)
+                                    }
+                                        .show()
+                                }
+                            } else {
+                                entryList.add(entry)
+                                returnList.add(entryList.indexOf(entry))
+                                entryIdList.add(entry.id ?: 0)
+                            }
                         }
                     } else {
                         break

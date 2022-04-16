@@ -1,117 +1,39 @@
 package com.diariodobebe.ui.main_activity
 
-import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.edit
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityMainBinding
-import com.diariodobebe.helpers.*
-import com.diariodobebe.models.Baby
+import com.diariodobebe.helpers.CHANNEL_ID
+import com.diariodobebe.helpers.MESSAGE_EXTRA
+import com.diariodobebe.helpers.Notification
+import com.diariodobebe.helpers.TITLE_EXTRA
 import com.diariodobebe.ui.IntroActivity
-import com.diariodobebe.ui.main_activity.home.HomeViewModel
-import com.google.android.material.navigation.NavigationView
-import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import java.io.File
-import java.nio.charset.StandardCharsets
 import java.util.*
-import kotlin.math.floor
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if (it) {
-                exportFile()
-            } else {
-                Toast.makeText(
-                    this,
-                    getString(R.string.no_permission),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }
-
-    private var importJson: String? = null
-    private val registerForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
-                try {
-                    val uri = it.data?.data
-                    val stream = contentResolver.openInputStream(uri!!)
-                    importJson = String(stream!!.readBytes())
-
-                    if (viewModel.baby != null) {
-                        val file = GetBaby.getBabyFile(this)
-                        val baby = GetBaby.getBaby(file)
-                        file.delete()
-
-                        val gson = GsonBuilder().registerTypeAdapter(
-                            Baby::class.java,
-                            HomeViewModel.Deserializer()
-                        )
-                            .create()
-                        val importedBaby = gson
-                            .fromJson(
-                                importJson,
-                                Baby::class.java
-                            )
-
-                        if (baby.entryList!= null) {
-                            baby.entryList!!.addAll(importedBaby.entryList!!)
-                        } else {
-                            baby.entryList = mutableListOf()
-                            baby.entryList!!.addAll(importedBaby.entryList!!)
-                        }
-                        file.writeText(gson.toJson(baby))
-
-                        Toast.makeText(this, getString(R.string.success_import), Toast.LENGTH_SHORT)
-                            .show()
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    }
-                } catch (e: Exception) {
-                    Toast.makeText(
-                        this, getString(R.string.error),
-                        Toast.LENGTH_LONG
-                    ).show()
-                    Log.e("TAG", "Error: AddBabyActivity PhotoPicker ", e)
-                }
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.toolbar)
+        supportActionBar?.title = ""
 
         installSplashScreen().setKeepOnScreenCondition {
             createNotificationChannel()
@@ -132,7 +55,8 @@ class MainActivity : AppCompatActivity() {
                 if (!viewModel.hasAlreadyLogged.value) {
                     startActivity(Intent(this, IntroActivity::class.java))
                     finish()
-                } else {
+                }
+                /* else {
                     val drawerLayout: DrawerLayout = binding.drawerLayout
                     val navView: NavigationView = binding.navView
                     val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -144,9 +68,9 @@ class MainActivity : AppCompatActivity() {
                     )
                     setupActionBarWithNavController(navController, appBarConfiguration)
                     navView.setupWithNavController(navController)
-                }
+                }*/
 
-                getBabyData(viewModel)
+                //getBabyData(viewModel)
                 return@setKeepOnScreenCondition false
             }
         }
@@ -154,72 +78,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        getBabyData(viewModel)
         super.onResume()
+        getBabyData(viewModel)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_save -> {
-                if (checkPermission()) {
-                    exportFile()
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                        requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    } else {
-                        exportFile()
-                    }
-
-                }
-            }
-            R.id.action_import -> {
-                if (getSharedPreferences(getString(R.string.PREFS), Context.MODE_PRIVATE)
-                        .getBoolean(getString(R.string.PREMIUM), false)
-                ) {
-                    val intent = Intent(Intent.ACTION_GET_CONTENT)
-                    intent.type = "application/json"
-                    registerForResult.launch(intent)
-                } else
-                    Toast.makeText(this, getString(R.string.premium_only), Toast.LENGTH_SHORT)
-                        .show()
-
+            R.id.main_menu_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun exportFile() {
-        if (getSharedPreferences(getString(R.string.PREFS), Context.MODE_PRIVATE)
-                .getBoolean(getString(R.string.PREMIUM), false)
-        ) {
-            val file = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                getString(R.string.app_name) + ".json"
-            )
-            try {
-                file.writeText(GetBaby.getBabyFile(this).readText())
-                Toast.makeText(
-                    this,
-                    getString(R.string.success_export, file.path),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } catch (e: Exception) {
-                Log.e("TAG", "exportFile: ", e)
-                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT)
-                    .show()
-            }
-        } else {
-            Toast.makeText(this, getString(R.string.premium_only), Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
-
-    private fun checkPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -232,7 +101,27 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+
     private fun getBabyData(viewModel: MainViewModel) {
+        lifecycleScope.launch {
+            viewModel.loadBaby()
+            while (viewModel.isLoading.value) {
+                continue
+            }
+
+            binding.appBarMain.imgBaby.setPadding(0, 0, 0, 0)
+            val baby = viewModel.baby
+            if (baby != null) {
+                binding.appBarMain.imgBaby.setImageBitmap(BitmapFactory.decodeStream(baby.picPath?.let {
+                    File(
+                        it
+                    ).inputStream()
+                }))
+
+                binding.appBarMain.tvBabyName.text = baby.name
+            }
+        }
+        /*
         lifecycleScope.launch {
             viewModel.loadBaby()
             while (viewModel.isLoading.value) {
@@ -269,50 +158,77 @@ class MainActivity : AppCompatActivity() {
                 header.findViewById<TextView>(R.id.tv_baby_age).text =
                     getString(R.string.support_email)
             }
-        }
+
+        }*/
     }
 
     private fun scheduleNotifications() {
-        /*val scheduledIds = getSharedPreferences(
-            getString(R.string.PREFS),
-            Context.MODE_PRIVATE
-        ).getStringSet(getString(R.string.PREFS_NOTIFICATIONS_IDS), null)*/
-
         val cal = Calendar.getInstance()
         var currentTimeLong = cal.timeInMillis
-        val dayInMillis = 60000 //86400000
+        val tempoEmMiliSegundos =
+            86400000 //86400000 //INTERVALO ENTRE AS NOTIFICAÇÕES. PADRÃO = 1 DIA
 
-        val notificationIds: MutableList<String> = mutableListOf()
+        //TEXTO DAS NOTIFICAÇÕES
+        val msg1 = getString(R.string.notification_message_template, 1)
+        val msg2 = getString(R.string.notification_message_template, 2)
+        val msg3 = getString(R.string.notification_message_template, 3)
+        val msg4 = getString(R.string.notification_message_template, 4)
+        val msg5 = getString(R.string.notification_message_template, 5)
+        val msg6 = getString(R.string.notification_message_template, 6)
+        val msg7 = getString(R.string.notification_message_template, 7)
+        val msg8 = getString(R.string.notification_message_template, 8)
+        val msg9 = getString(R.string.notification_message_template, 9)
+        val msg10 = getString(R.string.notification_message_template, 10)
+        //TITULO DAS NOTIFICAÇÕES
+        val titulo1 = getString(R.string.notification_title_template)
+        val titulo2 = getString(R.string.notification_title_template)
+        val titulo3 = getString(R.string.notification_title_template)
+        val titulo4 = getString(R.string.notification_title_template)
+        val titulo5 = getString(R.string.notification_title_template)
+        val titulo6 = getString(R.string.notification_title_template)
+        val titulo7 = getString(R.string.notification_title_template)
+        val titulo8 = getString(R.string.notification_title_template)
+        val titulo9 = getString(R.string.notification_title_template)
+        val titulo10 = getString(R.string.notification_title_template)
 
+        val notificationMap = mutableMapOf<Int, Pair<String, String>>()
+        notificationMap[0] = Pair(titulo1, msg1)
+        notificationMap[1] = Pair(titulo2, msg2)
+        notificationMap[2] = Pair(titulo3, msg3)
+        notificationMap[3] = Pair(titulo4, msg4)
+        notificationMap[4] = Pair(titulo5, msg5)
+        notificationMap[5] = Pair(titulo6, msg6)
+        notificationMap[6] = Pair(titulo7, msg7)
+        notificationMap[7] = Pair(titulo8, msg8)
+        notificationMap[8] = Pair(titulo9, msg9)
+        notificationMap[9] = Pair(titulo10, msg10)
 
-        for (i in 1..10) {
-            notificationIds.add(i.toString())
-            val intent = Intent(this, Notification::class.java)
-            val title = getString(R.string.notification_title_template)
-            val message = getString(R.string.notification_message_template, i)
+        for (i in 0..notificationMap.size) {
+            val titulo = notificationMap[i]?.first
+            val msg = notificationMap[i]?.second
 
-            intent.putExtra(TITLE_EXTRA, title)
-            intent.putExtra(MESSAGE_EXTRA, message)
+            if (!titulo.isNullOrBlank() && !msg.isNullOrBlank()) {
+                val intent = Intent(this, Notification::class.java)
+                intent.putExtra(TITLE_EXTRA, titulo)
+                intent.putExtra(MESSAGE_EXTRA, msg)
 
-            val pendingIntent = PendingIntent.getBroadcast(
-                this,
-                i,
-                intent,
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT else PendingIntent.FLAG_UPDATE_CURRENT
-            )
+                val pendingIntent = PendingIntent.getBroadcast(
+                    this,
+                    i,
+                    intent,
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT else PendingIntent.FLAG_UPDATE_CURRENT
+                )
 
-            currentTimeLong += dayInMillis
+                (getSystemService(Context.ALARM_SERVICE) as AlarmManager).cancel(pendingIntent)
 
-            AlarmManagerCompat.setExactAndAllowWhileIdle(
-                getSystemService(
-                    ALARM_SERVICE
-                ) as AlarmManager, AlarmManager.RTC_WAKEUP, currentTimeLong, pendingIntent
-            )
-        }
+                currentTimeLong += tempoEmMiliSegundos
 
-        getSharedPreferences(getString(R.string.PREFS), Context.MODE_PRIVATE).edit {
-            putStringSet(getString(R.string.PREFS_NOTIFICATIONS_IDS), notificationIds.toSet())
-            apply()
+                AlarmManagerCompat.setExactAndAllowWhileIdle(
+                    getSystemService(
+                        ALARM_SERVICE
+                    ) as AlarmManager, AlarmManager.RTC_WAKEUP, currentTimeLong, pendingIntent
+                )
+            }
         }
     }
 

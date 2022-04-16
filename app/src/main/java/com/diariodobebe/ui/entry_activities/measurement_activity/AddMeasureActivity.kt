@@ -2,13 +2,17 @@ package com.diariodobebe.ui.entry_activities.measurement_activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddMeasureBinding
 import com.diariodobebe.helpers.GetBaby
+import com.diariodobebe.helpers.PremiumStatus
 import com.diariodobebe.models.Entry
 import com.diariodobebe.models.Measure
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -101,8 +105,7 @@ class AddMeasureActivity : AppCompatActivity() {
             }
 
         }
-
-
+        
         binding.btnAddMeasure.setOnClickListener {
             wantsToProceed =
                 checkEditTexts(
@@ -124,6 +127,13 @@ class AddMeasureActivity : AppCompatActivity() {
 
                 GetBaby.insertEntry(measure, this)
             }
+        }
+
+        if (PremiumStatus.isPremium(this)) {
+            PremiumStatus.processPremium(binding.adView, binding.root)
+        } else {
+            MobileAds.initialize(this)
+            binding.adView.loadAd(AdRequest.Builder().build())
         }
     }
 

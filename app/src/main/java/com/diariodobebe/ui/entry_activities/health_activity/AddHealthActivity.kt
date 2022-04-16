@@ -2,6 +2,9 @@ package com.diariodobebe.ui.entry_activities.health_activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -10,8 +13,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddHealthBinding
 import com.diariodobebe.helpers.GetBaby
+import com.diariodobebe.helpers.PremiumStatus
 import com.diariodobebe.models.Entry
 import com.diariodobebe.models.Health
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -67,6 +73,14 @@ class AddHealthActivity : AppCompatActivity() {
 
                 GetBaby.insertEntry(healthEvent, this)
             }
+        }
+
+        if (PremiumStatus.isPremium(this)) {
+            (binding.btnAddHealth.layoutParams as RelativeLayout.LayoutParams).bottomMargin = 0
+            PremiumStatus.processPremium(binding.adView, binding.root)
+        } else {
+            MobileAds.initialize(this)
+            binding.adView.loadAd(AdRequest.Builder().build())
         }
     }
 

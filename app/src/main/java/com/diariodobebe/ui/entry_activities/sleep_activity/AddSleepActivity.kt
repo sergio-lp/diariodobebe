@@ -2,13 +2,17 @@ package com.diariodobebe.ui.entry_activities.sleep_activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddSleepBinding
 import com.diariodobebe.helpers.GetBaby
+import com.diariodobebe.helpers.PremiumStatus
 import com.diariodobebe.models.Entry
 import com.diariodobebe.models.Sleep
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -101,7 +105,6 @@ class AddSleepActivity : AppCompatActivity() {
 
         }
 
-
         binding.btnAddSleep.setOnClickListener {
             if (checkEditTexts(binding.edSleepTime, binding.edSleepDate, binding.edSleepDuration)) {
                 val sleep = Sleep(
@@ -114,6 +117,13 @@ class AddSleepActivity : AppCompatActivity() {
 
                 GetBaby.insertEntry(sleep, this)
             }
+        }
+
+        if (PremiumStatus.isPremium(this)) {
+            PremiumStatus.processPremium(binding.adView, binding.root)
+        } else {
+            MobileAds.initialize(this)
+            binding.adView.loadAd(AdRequest.Builder().build())
         }
     }
 

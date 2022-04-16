@@ -104,13 +104,13 @@ class ReportFragment : Fragment() {
 
             val baby = GetBaby.getBaby(GetBaby.getBabyFile(requireContext()))
             canvas.drawText(getString(R.string.baby_name_template, baby.name), 20f, 590f, paint)
-            canvas.drawText(
-                getString(
+            //canvas.drawText(
+                /*getString(
                     R.string.baby_age_template,
                     ((requireActivity() as MainActivity).binding.navView.getHeaderView(0)
                         .findViewById<TextView>(R.id.tv_baby_age)).text
-                ), 20f, 640f, paint
-            )
+                ), 20f, 640f, paint*/
+
 
             val cal = Calendar.getInstance()
             val df = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)

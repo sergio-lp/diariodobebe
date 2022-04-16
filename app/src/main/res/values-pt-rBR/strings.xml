@@ -3,7 +3,6 @@
     <string name="app_name">Diário do Bebe</string>
     <string name="menu_home">Início</string>
     <string name="menu_premium">Premium</string>
-    <string name="support_email">support@email.com</string>
     <string name="action_save">Exportar</string>
     <string name="navigation_drawer_open">Abrir menu de navegação</string>
     <string name="navigation_drawer_close">Fechar menu de navegação</string>
@@ -183,4 +182,16 @@
     <string name="no_permission">Não foi possível completar por falta de permissões</string>
     <string name="view_photo">Ver foto</string>
     <string name="click_to_view">Toque aqui para ver em maior aumento</string>
+    <string name="success_import">Importado com sucesso!</string>
+    <string name="settings">Configurações</string>
+    <string name="premium_short_desc">Seja Premium e tenha uma experiência sem limitações e sem anúncios!</string>
+    <string name="create_backup">Criar um backup</string>
+    <string name="backup_desc">Crie um arquivo de backup para que você possa importar as informações do seu bebê caso mude de celular. Você pode colocar este arquivo na nuvem, assim nunca perderá os dados!</string>
+    <string name="import_title">Importar dados</string>
+    <string name="import_desc">Importe os dados do seu bebê de um arquivo de backup</string>
+    <string name="app_1">Saltos de Desenvolvimento</string>
+    <string name="support_title">Precisa de ajuda?</string>
+    <string name="edit_data">Editar informações</string>
+    <string name="my_baby">Meu bebê</string>
+    <string name="free_day_limit_warning">Seja Premium para ver mais que %1$d dias!</string>
 </resources>

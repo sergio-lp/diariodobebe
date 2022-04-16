@@ -4,17 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,8 +18,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityPictureBinding
 import com.diariodobebe.helpers.GetBaby
+import com.diariodobebe.helpers.PremiumStatus
 import com.diariodobebe.models.Entry
 import com.diariodobebe.models.Photo
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -129,10 +128,10 @@ class PictureActivity : AppCompatActivity() {
 
                     var dateToSet: Long = hourInMillis.toLong() + minuteInMillis.toLong()
 
-                    if (!binding.edPictureTime.text.isNullOrEmpty()) {
+                    if (!binding.edPictureDate.text.isNullOrEmpty()) {
                         val df = DateFormat.getDateInstance(DateFormat.DATE_FIELD)
                         df.timeZone = TimeZone.getTimeZone("UTC")
-                        dateToSet += df.parse(binding.edPictureTime.text.toString())!!.time
+                        dateToSet += df.parse(binding.edPictureDate.text.toString())!!.time
                     }
 
                     val strHour: String =
@@ -225,7 +224,7 @@ class PictureActivity : AppCompatActivity() {
                     binding.photoView.setImageBitmap(pic)
 
                     if (binding.photoView.visibility == View.GONE) {
-                        fromBottomAnim.setAnimationListener(object: Animation.AnimationListener {
+                        fromBottomAnim.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationEnd(p0: Animation?) {
                                 binding.photoView.visibility = View.VISIBLE
                             }
@@ -240,7 +239,7 @@ class PictureActivity : AppCompatActivity() {
                         })
                         binding.photoView.startAnimation(fromBottomAnim)
                     } else {
-                        toBottomAnim.setAnimationListener(object: Animation.AnimationListener {
+                        toBottomAnim.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationEnd(p0: Animation?) {
                                 binding.photoView.visibility = View.VISIBLE
                             }
@@ -257,6 +256,13 @@ class PictureActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        if (PremiumStatus.isPremium(this)) {
+            PremiumStatus.processPremium(binding.adView, binding.root)
+        } else {
+            MobileAds.initialize(this)
+            binding.adView.loadAd(AdRequest.Builder().build())
         }
     }
 

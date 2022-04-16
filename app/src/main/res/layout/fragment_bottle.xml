@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="16dp"
     tools:context=".ui.entry_activities.feeding_activity.BottleFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:padding="16dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -120,6 +119,7 @@
             android:id="@+id/btn_add_feeding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/ad_margin_bottom"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:text="@string/add_feeding" />

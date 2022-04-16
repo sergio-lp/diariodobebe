@@ -2,6 +2,7 @@ package com.diariodobebe.ui.entry_activities.feeding_activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -9,6 +10,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddFeedingBinding
+import com.diariodobebe.helpers.PremiumStatus
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.tabs.TabLayoutMediator
 
 class AddFeedingActivity : AppCompatActivity() {
@@ -37,6 +41,13 @@ class AddFeedingActivity : AppCompatActivity() {
                 2 -> tab.text = getString(R.string.food)
             }
         }.attach()
+
+        if (PremiumStatus.isPremium(this)) {
+            PremiumStatus.processPremium(binding.adView, binding.root)
+        } else {
+            MobileAds.initialize(this)
+            binding.adView.loadAd(AdRequest.Builder().build())
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

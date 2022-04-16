@@ -2,6 +2,7 @@ package com.diariodobebe.helpers
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.diariodobebe.R
 import com.diariodobebe.models.Baby
@@ -29,6 +30,25 @@ class GetBaby {
                     Context.MODE_PRIVATE
                 ).getString("baby", "")?.replace(" ", "") + ".json"
             )
+        }
+
+        fun updateBaby(ctx: Context, newName: String?, newBirth: Long?, newPicPath: String?, newSex: Int?) {
+            val file = getBabyFile(ctx)
+            val baby = getBaby(file)
+            file.delete()
+
+            baby.name = newName ?: baby.name
+            baby.picPath = newPicPath ?: baby.picPath
+            baby.sex = newSex ?: baby.sex
+            baby.birthDate = newBirth ?: baby.birthDate
+
+            val json = Gson().toJson(baby)
+            file.writeText(
+                json
+            )
+
+            Log.e("TAG", "updateBaby: $json", )
+
         }
 
         private fun showToast(

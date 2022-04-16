@@ -7,9 +7,13 @@
     <string name="PREFS" translatable="false">PREFS</string>
     <string name="PREF_OPENED" translatable="false">PREF_OPENED</string>
 
+    <!-- IDs and API keys -->
+    <string name="app_1_url" translatable="false">https://play.google.com/store/apps/details?id=com.papel.saltinhos</string>
+    <string name="ID_ADMOB" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="support_email" translatable="false">suporte@email.com</string>
+
     <string name="menu_home">Home</string>
     <string name="menu_premium">Premium</string>
-    <string name="support_email">suporte@email.com</string>
     <string name="action_save">Export</string>
     <string name="welcome">Welcome!</string>
     <string name="welcome_description">If you want to track everything about your newborn baby, you\'re in the right place!</string>
@@ -176,7 +180,7 @@
     <string name="baby_insert_error">An error occurred when saving your baby! Please don\'t use special characters.</string>
     <string name="add_picture">Add photo</string>
     <string name="picture_date">Date of photo</string>
-    <string name="picture_time" translatable="false">Time of photo</string>
+    <string name="picture_time">Time of photo</string>
     <string name="take_picture_hint">Click to select a photo</string>
     <string name="no_pic_added">You have not added a photo!</string>
     <string name="photo">Photo</string>
@@ -191,9 +195,20 @@
     <string name="PREMIUM" translatable="false">isPremium</string>
     <string name="action_import">Import</string>
     <string name="success_export">Your baby data has been exported successfully to %1$s</string>
-    <string name="success_import" translatable="false">Importado com sucesso!</string>
+    <string name="success_import">Successfully imported!</string>
     <string name="premium_only">This feature is available only for Premium users!</string>
     <string name="no_permission">Unable to complete action because of permission lack</string>
     <string name="view_photo">View photo</string>
     <string name="click_to_view">Touch here to view photo in fullscreen</string>
+    <string name="settings">Settings</string>
+    <string name="premium_short_desc">Be Premium and unlock an ad-free, unlimited experience!</string>
+    <string name="create_backup">Create backup file</string>
+    <string name="backup_desc">Create a backup file so you can import your baby data if you change your phone. You can upload the file to the cloud so you don\'t ever lose your data!</string>
+    <string name="import_title">Import your data</string>
+    <string name="import_desc">Import your data from a backup file!</string>
+    <string name="app_1">Development leaps</string>
+    <string name="support_title">Need help?</string>
+    <string name="edit_data">Edit information</string>
+    <string name="my_baby">My baby</string>
+    <string name="free_day_limit_warning">Free users can only see up to %1$d days!</string>
 </resources>

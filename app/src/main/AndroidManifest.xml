@@ -15,9 +15,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DiarioDoBebe">
+        <activity
+            android:name=".ui.main_activity.EmptyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main_activity.SettingsActivity"
+            android:exported="false" />
+
         <receiver
             android:name=".helpers.Notification"
             android:enabled="true" />
+
         <activity
             android:name=".ui.entry_activities.picture_activity.PictureActivity"
             android:exported="false" />

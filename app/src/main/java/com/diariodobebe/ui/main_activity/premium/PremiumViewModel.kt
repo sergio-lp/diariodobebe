@@ -7,6 +7,7 @@ import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import com.android.billingclient.api.*
 import com.diariodobebe.R
+import com.diariodobebe.helpers.PremiumStatus
 
 class PremiumViewModel(val app: Application) : AndroidViewModel(app) {
     private val purchasesUpdatedListener =
@@ -43,12 +44,7 @@ class PremiumViewModel(val app: Application) : AndroidViewModel(app) {
                             Toast.LENGTH_LONG
                         ).show()
 
-                        app.getSharedPreferences(
-                            app.getString(R.string.PREFS),
-                            Context.MODE_PRIVATE
-                        ).edit {
-                            putBoolean(app.getString(R.string.PREMIUM), true)
-                        }
+                        PremiumStatus.setPremium(app)
                     }
                 }
             }
