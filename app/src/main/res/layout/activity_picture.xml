@@ -28,130 +28,138 @@
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/photoView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible" />
+        android:visibility="gone"
+        android:layout_height="match_parent" />
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/content_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/appbar_layout">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_picture_date"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/picture_date"
-                android:labelFor="@id/ed_picture_date">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <EditText
-                    android:id="@+id/ed_picture_date"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_picture_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:importantForAutofill="no"
-                    android:inputType="none"
-                    tools:ignore="TextFields" />
+                    android:hint="@string/picture_date"
+                    android:labelFor="@id/ed_picture_date">
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_picture_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/picture_time"
-                android:labelFor="@id/ed_picture_time">
-
-                <EditText
-                    android:id="@+id/ed_picture_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:importantForAutofill="no"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_pic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:foreground="?selectableItemBackground">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:id="@+id/baby_picture"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_gravity="center_horizontal"
-                        android:padding="120dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_camera_add" />
-
-                    <TextView
-                        android:id="@+id/tv_pic_hint"
+                    <EditText
+                        android:id="@+id/ed_picture_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/take_picture_hint"
-                        android:textAlignment="center"
-                        android:visibility="visible" />
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:importantForAutofill="no"
+                        android:inputType="none"
+                        tools:ignore="TextFields" />
 
-                </LinearLayout>
-
-
-            </androidx.cardview.widget.CardView>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <EditText
-                    android:id="@+id/ed_picture_comment"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_picture_time"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:gravity="top"
-                    android:hint="@string/comment_hint"
-                    android:importantForAutofill="no"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:padding="16dp"
-                    android:scrollbars="vertical" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/picture_time"
+                    android:labelFor="@id/ed_picture_time">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        android:id="@+id/ed_picture_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:importantForAutofill="no"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            <Button
-                android:id="@+id/btn_add_picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="@dimen/ad_margin_bottom"
-                android:text="@string/add_picture" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:foreground="?selectableItemBackground">
 
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
-    </ScrollView>
+                        <ImageView
+                            android:id="@+id/baby_picture"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center_horizontal"
+                            android:padding="120dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_camera_add" />
+
+                        <TextView
+                            android:id="@+id/tv_pic_hint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/take_picture_hint"
+                            android:textAlignment="center"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <EditText
+                        android:id="@+id/ed_picture_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:gravity="top"
+                        android:hint="@string/comment_hint"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:padding="16dp"
+                        android:scrollbars="vertical" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <Button
+                    android:id="@+id/btn_add_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="@dimen/ad_margin_bottom"
+                    android:text="@string/add_picture" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

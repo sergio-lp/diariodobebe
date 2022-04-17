@@ -22,8 +22,8 @@
     <string name="expand_entry_view">Details</string>
     <string name="breast_left_time"><![CDATA[<b>Left breast:</b><br>%1$s minutes]]></string>
     <string name="health_condition"><![CDATA[<b>Condition:</b> %1$s]]></string>
-    <string name="health_medication"><![CDATA[<b>Medication:</b> %1$s]]></string>
-    <string name="health_temperature"><![CDATA[<b>Temperature:</b> %1$s °C]]></string>
+    <string name="health_medication"><![CDATA[<b>Medication:</b> %1$s %2$s %3$s]]></string>
+    <string name="health_temperature"><![CDATA[<b>Temperature:</b> %1$s °C %2$s %3$s]]></string>
     <string name="health_med_quantity"><![CDATA[<b>Amount:</b> %1$s]]></string>
     <string name="health_symptoms"><![CDATA[<b>Symptoms:</b> %1$s]]></string>
     <string name="entry_comment">Comment</string>
@@ -89,8 +89,8 @@
     <string name="please_add_baby">Please add your baby data to start using the journal!</string>
     <string name="duration_template">%1$d minutes</string>
     <string name="diaper_dry">Dry</string>
-    <string name="diaper_pee">Pee</string>
-    <string name="diaper_poop">Poop</string>
+    <string name="diaper_pee">Wet</string>
+    <string name="diaper_poop">Dirty</string>
     <string name="bad_mood">Bad</string>
     <string name="normal_mood">Normal</string>
     <string name="good_mood">Good</string>
@@ -157,8 +157,9 @@
 
     <string-array name="diaper_states">
         <item>Dry</item>
-        <item>Pee</item>
-        <item>Poop</item>
+        <item>Wet</item>
+        <item>Dirty</item>
+        <item>Both</item>
     </string-array>
     <string name="breast_right_time"><![CDATA[<b>Right breast:</b><br>%1$s minutes]]></string>
     <string name="sleep_report_desc">Hey there!\n\nHere you can download a PDF document with all your baby sleep data! Click the button below if you\'d like to do so!</string>
@@ -211,4 +212,15 @@
     <string name="edit_data">Edit information</string>
     <string name="my_baby">My baby</string>
     <string name="free_day_limit_warning">Free users can only see up to %1$d days!</string>
+    <string name="tv_offer_feature">This feature is only available for Premium users!</string>
+    <string name="tv_offer_description">Only the first %1$d days are visible for free users! Would you like to be Premium and unlock all entries?</string>
+    <string name="unlock_everything">Unlock everything</string>
+    <string name="free_time_title">Oh oh! You have locked entries.</string>
+    <string name="diaper_both">Both</string>
+    <string name="medication_date">Date of medication intake (optional)</string>
+    <string name="medication_time">Time of medication intake (optional)</string>
+    <string name="vital_date">Date of detection (optional)</string>
+    <string name="vital_time">Time of detection (optional)</string>
+    <string name="at_time">at</string>
+    <string name="not_informed">Not added</string>
 </resources>

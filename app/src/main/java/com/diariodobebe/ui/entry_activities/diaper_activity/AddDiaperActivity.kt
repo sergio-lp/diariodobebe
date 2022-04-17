@@ -2,7 +2,6 @@ package com.diariodobebe.ui.entry_activities.diaper_activity
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -60,7 +59,7 @@ class AddDiaperActivity : AppCompatActivity() {
                 var dateToSet: Long = date
 
                 if (!binding.edDiaperTime.text.isNullOrEmpty()) {
-                    val hour = SimpleDateFormat("HH:mm")
+                    val hour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
                     hour.timeZone = TimeZone.getTimeZone("UTC")
                     dateToSet += hour.parse(binding.edDiaperTime.text.toString())!!.time
                 }

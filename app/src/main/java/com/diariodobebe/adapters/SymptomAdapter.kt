@@ -43,11 +43,11 @@ class SymptomAdapter(private val symptoms: MutableList<String>) :
                         val index = symptoms.indexOf(symptom)
                         if (symptoms.size > 1) {
                             symptoms.remove(symptom)
-                            this.notifyDataSetChanged()
+                            this.notifyItemRemoved(index)
                         } else {
                             symptoms[index] =
                                 holder.root.context.getString(R.string.no_symptom_added)
-                            this.notifyDataSetChanged()
+                            this.notifyItemChanged(index)
                         }
                     }
                     .setNegativeButton(holder.root.context.getString(R.string.no)) { dialog, _ ->

@@ -15,8 +15,8 @@
     <string name="breast_left_time"><![CDATA[<b>Peito esquerdo:</b><br>%1$s minutos]]></string>
     <string name="breast_right_time"><![CDATA[<b>Peito direito:</b><br>%1$s minutos]]></string>
     <string name="health_condition"><![CDATA[<b>Condição de saúde:</b> %1$s]]></string>
-    <string name="health_medication"><![CDATA[<b>Medicamento:</b> %1$s]]></string>
-    <string name="health_temperature"><![CDATA[<b>Temperatura:</b> %1$s °C]]></string>
+    <string name="health_medication"><![CDATA[<b>Medicamento:</b> %1$s %2$s %3$s]]></string>
+    <string name="health_temperature"><![CDATA[<b>Temperatura:</b> %1$s °C %2$s %3$s]]></string>
     <string name="health_med_quantity"><![CDATA[<b>Quantidade:</b> %1$s]]></string>
     <string name="health_symptoms"><![CDATA[<b>Sintomas:</b> %1$s]]></string>
     <string name="entry_comment">Comentário</string>
@@ -80,8 +80,9 @@
     <string name="please_add_baby">Por favor informe os dados do seu bebê para começar a usar o diário</string>
     <string name="duration_template">%1$d minutos</string>
     <string name="diaper_dry">Seca</string>
-    <string name="diaper_pee">Xixi</string>
-    <string name="diaper_poop">Cocô</string>
+    <string name="diaper_pee">Molhada</string>
+    <string name="diaper_poop">Suja</string>
+    <string name="diaper_both">Ambas</string>
     <string name="bad_mood">Mau</string>
     <string name="normal_mood">Neutro</string>
     <string name="good_mood">Bom</string>
@@ -160,8 +161,9 @@
 
     <string-array name="diaper_states">
         <item>Seca</item>
-        <item>Xixi</item>
-        <item>Cocô</item>
+        <item>Molhada</item>
+        <item>Suja</item>
+        <item>Ambas</item>
     </string-array>
     <string name="premium_thanks">Obrigado por ajudar no desenvolvimento do aplicativo! Aproveite sua experiência sem anúncios e sem limitações!</string>
     <string name="you_are_premium">Você é Premium!</string>
@@ -194,4 +196,14 @@
     <string name="edit_data">Editar informações</string>
     <string name="my_baby">Meu bebê</string>
     <string name="free_day_limit_warning">Seja Premium para ver mais que %1$d dias!</string>
+    <string name="tv_offer_feature">Essa função só está disponível para usuários Premium!</string>
+    <string name="tv_offer_description">Apenas os primeiros %1$d dias são visíveis para usuários gratuitos. Você gostaria de se tornar Premium e desbloquear todos os dias?</string>
+    <string name="unlock_everything">Desbloquear tudo</string>
+    <string name="free_time_title">Alguns registros do diário não estão visíveis!</string>
+    <string name="medication_date">Data de uso da medicação (opcional)</string>
+    <string name="medication_time">Hora de uso da medicação (opcional)</string>
+    <string name="vital_date">Data de aferição (opcional)</string>
+    <string name="vital_time">Hora de aferição (opcional)</string>
+    <string name="at_time">em</string>
+    <string name="not_informed">Não adicionado</string>
 </resources>

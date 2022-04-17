@@ -13,7 +13,7 @@ const val TITLE_EXTRA = "title_extra"
 const val MESSAGE_EXTRA = "message_extra"
 
 class Notification : BroadcastReceiver() {
-    val notificationId = Random.nextInt()
+    private val notificationId = Random.nextInt()
 
     override fun onReceive(ctx: Context, intent: Intent) {
         val notification = NotificationCompat.Builder(ctx, CHANNEL_ID)

@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:fillViewport="true"
     tools:context=".ui.main_activity.premium.PremiumFragment">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="32dp"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp">
 
         <TextView
             android:id="@+id/tv_be_premium"
@@ -29,6 +32,7 @@
             android:id="@+id/tv_premium_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:layout_marginTop="24dp"
             android:text="@string/premium_description"
             android:textStyle="bold"
@@ -39,10 +43,12 @@
             android:id="@+id/tv_premium_advantages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
             android:text="@string/premium_desc"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_premium_desc" />
+
 
         <ProgressBar
             android:id="@+id/progressbar"
@@ -50,27 +56,58 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:indeterminateTint="@color/colorPrimaryDarker"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_premium_advantages" />
 
-
-        <Button
+        <androidx.cardview.widget.CardView
             android:id="@+id/btn_premium"
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="@color/colorPrimaryDarker"
-            android:text="@string/btn_premium"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
             android:visibility="invisible"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_premium_advantages" />
+            app:layout_constraintTop_toBottomOf="@id/tv_premium_advantages">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryLight"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tv_real_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/colorPrimaryDarker"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_get_premium"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_real_value"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/colorPrimaryDarker"
+                    android:text="@string/btn_premium"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 
 
 </androidx.core.widget.NestedScrollView>

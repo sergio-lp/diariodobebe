@@ -192,7 +192,7 @@ class PictureActivity : AppCompatActivity() {
                 cal.timeInMillis = photo.date!!
                 val df = DateFormat.getDateTimeInstance(
                     DateFormat.DATE_FIELD,
-                    DateFormat.LONG
+                    DateFormat.SHORT
                 )
                 df.timeZone = TimeZone.getTimeZone("UTC")
 
@@ -206,6 +206,9 @@ class PictureActivity : AppCompatActivity() {
                 binding.edPictureTime.visibility = View.GONE
                 binding.edPictureDate.setBackgroundResource(android.R.color.transparent)
                 binding.tilPictureTime.visibility = View.GONE
+                binding.edPictureComment.isFocusable = false
+                binding.edPictureComment.isClickable = false
+                binding.edPictureComment.background = null
 
                 if (!photo.comment.isNullOrEmpty()) {
                     binding.edPictureComment.setText(photo.comment.toString())
@@ -226,7 +229,6 @@ class PictureActivity : AppCompatActivity() {
                     if (binding.photoView.visibility == View.GONE) {
                         fromBottomAnim.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationEnd(p0: Animation?) {
-                                binding.photoView.visibility = View.VISIBLE
                             }
 
                             override fun onAnimationRepeat(p0: Animation?) {
@@ -234,14 +236,16 @@ class PictureActivity : AppCompatActivity() {
                             }
 
                             override fun onAnimationStart(p0: Animation?) {
-
+                                binding.photoView.visibility = View.VISIBLE
+                                binding.contentView.visibility = View.GONE
                             }
                         })
                         binding.photoView.startAnimation(fromBottomAnim)
                     } else {
                         toBottomAnim.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationEnd(p0: Animation?) {
-                                binding.photoView.visibility = View.VISIBLE
+                                binding.photoView.visibility = View.GONE
+                                binding.contentView.visibility = View.VISIBLE
                             }
 
                             override fun onAnimationRepeat(p0: Animation?) {

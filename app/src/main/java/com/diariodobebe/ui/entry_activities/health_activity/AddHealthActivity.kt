@@ -2,8 +2,6 @@ package com.diariodobebe.ui.entry_activities.health_activity
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,7 +16,6 @@ import com.diariodobebe.models.Entry
 import com.diariodobebe.models.Health
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 
 class AddHealthActivity : AppCompatActivity() {
@@ -46,6 +43,8 @@ class AddHealthActivity : AppCompatActivity() {
         binding.viewPager.adapter =
             HealthPagerAdapter(fragmentList, supportFragmentManager, lifecycle)
 
+        binding.viewPager.offscreenPageLimit = 3
+
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, pos ->
             when (pos) {
                 0 -> tab.text = getString(R.string.condition)
@@ -68,6 +67,8 @@ class AddHealthActivity : AppCompatActivity() {
                     medFragment.binding.edMedAmount.text.toString().toIntOrNull(),
                     vitalsFragment.binding.edVitalsTemperature.text.toString().toIntOrNull(),
                     vitalsFragment.mood,
+                    medFragment.finalDate,
+                    vitalsFragment.finalDate,
                     healthFragment.symptoms.toTypedArray()
                 )
 
@@ -101,31 +102,13 @@ class AddHealthActivity : AppCompatActivity() {
         }
 
         if (conditionFragment.binding.edHealthCondition.text.isNullOrEmpty()) {
-            conditionFragment.binding.edHealthTime.error = getString(R.string.please_fill_field)
+            conditionFragment.binding.edHealthCondition.error =
+                getString(R.string.please_fill_field)
             binding.viewPager.currentItem = 0
             return false
         }
 
         return true
-    }
-
-    private fun showConfirmationDialog(emptyField: String) {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.field_empty)
-            .setMessage(
-                getString(
-                    R.string.field_empty_template,
-                    emptyField.lowercase()
-                )
-            )
-            .setCancelable(true)
-            .setPositiveButton(R.string.yes) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setNegativeButton(R.string.no) { dialog, _ ->
-                wantsToProceed = false
-                dialog.dismiss()
-            }.create().show()
     }
 
     private class HealthPagerAdapter(

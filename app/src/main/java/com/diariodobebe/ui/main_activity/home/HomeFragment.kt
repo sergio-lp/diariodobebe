@@ -230,9 +230,20 @@ class HomeFragment : Fragment() {
                 }
             }
 
-            viewModel.getEntries(entryList, entryIdList, 0, binding.root)
+            viewModel.getEntries(entryList, entryIdList, 0)
             while (viewModel.isLoading.value) {
                 continue
+            }
+
+            if (viewModel.shouldShowPremiumOffer) {
+                binding.tvOfferDescription.text =
+                    getString(R.string.tv_offer_description, HomeViewModel.DIAS_PARA_VERSAO_FREE)
+                binding.premiumOffer.visibility = View.VISIBLE
+                binding.btnDismissOffer.setOnClickListener {
+                    binding.premiumOffer.visibility = View.GONE
+                }
+            } else {
+                binding.premiumOffer.visibility = View.GONE
             }
 
             if (entryIdList.size > 0) {
@@ -276,7 +287,7 @@ class HomeFragment : Fragment() {
                             ((binding.rvBabyTimeline.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
 
                         val addedList =
-                            viewModel.getEntries(entryList, entryIdList, lastItem, binding.root)
+                            viewModel.getEntries(entryList, entryIdList, lastItem)
                         delay(800)
 
                         (binding.rvBabyTimeline.adapter as EntryAdapter).notifyItemRangeInserted(
@@ -285,7 +296,6 @@ class HomeFragment : Fragment() {
                         )
 
                         binding.swipeRefresh.isRefreshing = false
-
                     }
                 }
 

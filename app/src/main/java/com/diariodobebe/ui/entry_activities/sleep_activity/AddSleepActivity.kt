@@ -2,7 +2,6 @@ package com.diariodobebe.ui.entry_activities.sleep_activity
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.diariodobebe.R
@@ -50,7 +49,7 @@ class AddSleepActivity : AppCompatActivity() {
                 var dateToSet: Long = date
 
                 if (!binding.edSleepTime.text.isNullOrEmpty()) {
-                    val hour = SimpleDateFormat("HH:mm")
+                    val hour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
                     hour.timeZone = TimeZone.getTimeZone("UTC")
                     dateToSet += hour.parse(binding.edSleepTime.text.toString())!!.time
                 }

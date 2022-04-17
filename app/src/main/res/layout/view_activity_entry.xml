@@ -87,8 +87,8 @@
                         android:id="@+id/tv_entry_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_below="@id/tv_entry_type"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="21.5dp"
                         android:layout_toEndOf="@id/img_activity_type" />
 
@@ -254,7 +254,6 @@
                             android:id="@+id/tv_health_entry_temperature"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:text="@string/health_temperature" />
 
 
@@ -290,6 +289,15 @@
 
                     </LinearLayout>
 
+                    <Button
+                        android:id="@+id/btn_show_pic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone"
+                        android:text="@string/view_photo" />
+
                     <LinearLayout
                         android:id="@+id/ll_comment"
                         android:layout_width="match_parent"
@@ -316,6 +324,7 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

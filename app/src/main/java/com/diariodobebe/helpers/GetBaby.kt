@@ -2,7 +2,6 @@ package com.diariodobebe.helpers
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import com.diariodobebe.R
 import com.diariodobebe.models.Baby
@@ -46,9 +45,6 @@ class GetBaby {
             file.writeText(
                 json
             )
-
-            Log.e("TAG", "updateBaby: $json", )
-
         }
 
         private fun showToast(

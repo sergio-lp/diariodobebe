@@ -1,7 +1,6 @@
 package com.diariodobebe.ui.entry_activities.feeding_activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +47,7 @@ class BottleFragment : Fragment() {
                 var dateToSet: Long = date
 
                 if (!binding.edFeedingStart.text.isNullOrEmpty()) {
-                    val hour = SimpleDateFormat("HH:mm")
+                    val hour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
                     hour.timeZone = TimeZone.getTimeZone("UTC")
                     dateToSet += hour.parse(binding.edFeedingStart.text.toString())!!.time
                 }

@@ -2,7 +2,6 @@ package com.diariodobebe.ui.entry_activities.event_activity
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.diariodobebe.R
@@ -51,7 +50,7 @@ class AddEventActivity : AppCompatActivity() {
                 var dateToSet: Long = date
 
                 if (!binding.edEventTime.text.isNullOrEmpty()) {
-                    val hour = SimpleDateFormat("HH:mm")
+                    val hour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
                     hour.timeZone = TimeZone.getTimeZone("UTC")
                     dateToSet += hour.parse(binding.edEventTime.text.toString())!!.time
                 }

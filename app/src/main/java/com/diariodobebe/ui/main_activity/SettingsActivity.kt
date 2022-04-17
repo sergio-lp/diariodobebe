@@ -401,8 +401,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
         } else {
-            Toast.makeText(this, getString(R.string.premium_only), Toast.LENGTH_SHORT)
-                .show()
+            PremiumStatus.showPremiumOffer(layoutInflater)
         }
     }
 
@@ -412,8 +411,7 @@ class SettingsActivity : AppCompatActivity() {
             intent.type = "application/json"
             registerForResult.launch(intent)
         } else
-            Toast.makeText(this, getString(R.string.premium_only), Toast.LENGTH_SHORT)
-                .show()
+            PremiumStatus.showPremiumOffer(layoutInflater)
 
     }
 }

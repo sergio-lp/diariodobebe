@@ -35,6 +35,8 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
 
         val entryGroupDateTv: TextView = view.findViewById(R.id.tv_entry_day)
 
+        val viewPicButton: Button = view.findViewById(R.id.btn_show_pic)
+
         val entryLine: FrameLayout = view.findViewById(R.id.layout_entry_line)
         val entryPic: ImageView = view.findViewById(R.id.img_activity_type)
         val entryType: TextView = view.findViewById(R.id.tv_entry_type)
@@ -118,7 +120,6 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
             holder.llDetailsShow.visibility = View.GONE
         }
 
-
         holder.entryComment.text = if (!entry.comment.isNullOrBlank()) {
             entry.comment
         } else {
@@ -139,13 +140,14 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
                     )
                 )
 
-                holder.root.setOnClickListener {
+                holder.viewPicButton.setOnClickListener {
                     val intent = Intent(holder.root.context, PictureActivity::class.java)
                     intent.putExtra(Photo.EXTRA_HAS_PHOTO, (entry as Photo).path != null)
                     intent.putExtra(Photo.EXTRA_PATH, (entry as Photo).path)
                     intent.putExtra(Photo.EXTRA_PHOTO, entry)
                     holder.root.context.startActivity(intent)
                 }
+
             }
             Entry.EntryType.ENTRY_HEALTH -> {
                 entry = entry as Health
@@ -171,35 +173,99 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
                     HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
 
+                val dfHealth = SimpleDateFormat.getDateTimeInstance(
+                    SimpleDateFormat.DATE_FIELD,
+                    SimpleDateFormat.SHORT
+                )
+                dfHealth.timeZone = TimeZone.getTimeZone("UTC")
+                val healthCal = Calendar.getInstance()
+                cal.timeZone = TimeZone.getTimeZone("UTC")
+                healthCal.timeInMillis = entry.medTime ?: -1
+
+
+                if (!entry.medication.isNullOrBlank()) {
+                    holder.entryHealthMed.visibility = View.VISIBLE
+                    if (healthCal.timeInMillis != (-1).toLong()) {
+                        holder.entryHealthMed.text =
+                            HtmlCompat.fromHtml(
+                                ctx.getString(
+                                    R.string.health_medication,
+                                    entry.medication ?: ctx.getString(R.string.not_informed),
+                                    ctx.getString(R.string.at_time),
+                                    dfHealth.format(healthCal.time)
+                                ),
+                                HtmlCompat.FROM_HTML_MODE_LEGACY
+                            )
+                    } else {
+                        holder.entryHealthMed.text =
+                            HtmlCompat.fromHtml(
+                                ctx.getString(
+                                    R.string.health_medication,
+                                    entry.medication ?: ctx.getString(R.string.not_informed),
+                                    "", ""
+                                ),
+                                HtmlCompat.FROM_HTML_MODE_LEGACY
+                            )
+                    }
+                } else {
+                    holder.entryHealthMed.visibility = View.GONE
+                }
+
+                healthCal.timeInMillis = entry.vitalsTime ?: -1
+
+                if (entry.temperature != null) {
+                    holder.entryHealthTemperature.visibility = View.VISIBLE
+                    if (healthCal.timeInMillis != (-1).toLong()) {
+                        holder.entryHealthTemperature.text =
+                            HtmlCompat.fromHtml(
+                                ctx.getString(
+                                    R.string.health_temperature,
+                                    entry.temperature.toString(),
+                                    ctx.getString(R.string.at_time),
+                                    dfHealth.format(healthCal.timeInMillis)
+                                ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                            )
+                    } else {
+                        holder.entryHealthTemperature.text =
+                            HtmlCompat.fromHtml(
+                                ctx.getString(
+                                    R.string.health_temperature,
+                                    entry.temperature.toString(),
+                                    "", ""
+                                ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                            )
+                    }
+                } else {
+                    holder.entryHealthTemperature.visibility = View.GONE
+                }
+
                 holder.entryHealthCondition.text =
                     HtmlCompat.fromHtml(
                         ctx.getString(R.string.health_condition, entry.healthEvent),
                         HtmlCompat.FROM_HTML_MODE_LEGACY
                     )
-                holder.entryHealthMed.text =
-                    HtmlCompat.fromHtml(
-                        ctx.getString(R.string.health_medication, entry.medication),
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
-                holder.entryHealthQuantity.text =
-                    HtmlCompat.fromHtml(
-                        ctx.getString(
-                            R.string.health_med_quantity,
-                            entry.medAmount.toString()
-                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
-                holder.entryHealthTemperature.text =
-                    HtmlCompat.fromHtml(
-                        ctx.getString(
-                            R.string.health_temperature,
-                            entry.temperature.toString()
-                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+
+                if (entry.medAmount != null) {
+                    holder.entryHealthQuantity.visibility = View.VISIBLE
+                    holder.entryHealthQuantity.text =
+                        HtmlCompat.fromHtml(
+                            ctx.getString(
+                                R.string.health_med_quantity,
+                                entry.medAmount.toString()
+                            ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                        )
+                } else {
+                    holder.entryHealthQuantity.visibility = View.GONE
+                }
 
                 var symptoms = ""
                 if (!entry.symptoms.isNullOrEmpty()) {
-                    entry.symptoms!!.forEach {
-                        symptoms += "$it, "
+                    entry.symptoms!!.forEachIndexed { index, symptom ->
+                        symptoms += if ((entry as Health).symptoms!!.lastIndex == index) {
+                            "$symptom."
+                        } else {
+                            "$symptom, "
+                        }
                     }
                 }
 
@@ -331,8 +397,13 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
                     Diaper.STATE_PEE -> {
                         ctx.getString(R.string.diaper_pee)
                     }
-                    else -> {
+                    Diaper.STATE_POOP -> {
                         ctx.getString(R.string.diaper_poop)
+                    }
+                    Diaper.STATE_BOTH ->
+                        ctx.getString(R.string.diaper_both)
+                    else -> {
+                        ctx.getString(R.string.error_short)
                     }
                 }
             }
@@ -417,6 +488,7 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
             Entry.EntryType.ENTRY_SLEEP -> {
                 holder.entryDiaperDetails.visibility = View.GONE
                 holder.entryFoodType.visibility = View.GONE
+                holder.viewPicButton.visibility = View.GONE
                 holder.entryHealthDetailsLayout.visibility = View.GONE
                 holder.entryActivityDetails.visibility = View.GONE
                 holder.entryBreastDetailsLayout.visibility = View.GONE
@@ -426,10 +498,13 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
                 holder.entryFoodType.visibility = View.GONE
                 holder.entryHealthDetailsLayout.visibility = View.GONE
                 holder.entryActivityDetails.visibility = View.GONE
+                holder.viewPicButton.visibility = View.GONE
                 holder.entryBreastDetailsLayout.visibility = View.GONE
             }
             Entry.EntryType.ENTRY_FEEDING -> {
                 val entry = e as Feeding
+
+                holder.viewPicButton.visibility = View.GONE
 
                 if (!entry.foodType.isNullOrEmpty()) {
                     holder.entryFoodType.visibility = View.VISIBLE
@@ -453,6 +528,8 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
             Entry.EntryType.ENTRY_DIAPER -> {
                 val entry = e as Diaper
 
+                holder.viewPicButton.visibility = View.GONE
+
                 if (!entry.diaperBrand.isNullOrEmpty()) {
                     holder.entryDiaperBrand.text = entry.diaperBrand
                     holder.entryDiaperDetails.visibility = View.VISIBLE
@@ -466,6 +543,8 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
             Entry.EntryType.ENTRY_EVENT -> {
                 val entry = e as Event
 
+                holder.viewPicButton.visibility = View.GONE
+
                 if (!entry.activityType.isNullOrEmpty()) {
                     holder.entryActivityDetails.text = entry.activityType
                     holder.entryActivityDescription.visibility = View.VISIBLE
@@ -478,6 +557,8 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
             }
             Entry.EntryType.ENTRY_HEALTH -> {
                 val entry = e as Health
+
+                holder.viewPicButton.visibility = View.GONE
 
                 if (!entry.symptoms.isNullOrEmpty()) {
                     holder.entryHealthSymptoms.visibility = View.VISIBLE
@@ -505,6 +586,15 @@ class EntryAdapter(private val entryList: MutableList<Entry>) :
                 holder.entryActivityDetails.visibility = View.GONE
                 holder.entryBreastDetailsLayout.visibility = View.GONE
 
+                hasDetails = true
+            }
+            Entry.EntryType.ENTRY_PICTURE -> {
+                holder.viewPicButton.visibility = View.VISIBLE
+                holder.entryActivityDetails.visibility = View.GONE
+                holder.entryFoodType.visibility = View.GONE
+                holder.entryHealthDetailsLayout.visibility = View.GONE
+                holder.entryDiaperDetails.visibility = View.GONE
+                holder.entryBreastDetailsLayout.visibility = View.GONE
                 hasDetails = true
             }
         }

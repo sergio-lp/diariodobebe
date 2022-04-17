@@ -1,10 +1,12 @@
 package com.diariodobebe.ui.main_activity.premium
 
+import android.icu.util.Currency
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.*
@@ -36,6 +38,18 @@ class PremiumFragment : Fragment() {
 
         binding.btnPremium.visibility = View.GONE
         binding.progressbar.visibility = View.VISIBLE
+
+        if (PremiumStatus.isPremium(requireContext())) {
+            binding.tvBePremium.text = getString(R.string.you_are_premium)
+            binding.tvPremiumDesc.text = getString(R.string.premium_thanks)
+            binding.tvPremiumAdvantages.visibility = View.GONE
+            binding.btnPremium.visibility = View.GONE
+            binding.progressbar.visibility = View.GONE
+
+        } else {
+            binding.btnPremium.visibility = View.VISIBLE
+            binding.progressbar.visibility = View.GONE
+        }
 
         billingClient = BillingClient.newBuilder(requireContext())
             .enablePendingPurchases()
@@ -153,14 +167,25 @@ class PremiumFragment : Fragment() {
                                     startBillingConnection(billingClient, false)
                                 }
                             } else {
-                                binding.btnPremium.setOnClickListener {
+                                val skuDetails = skuDetailsResult.skuDetailsList?.get(0)
+                                    ?: run {
+                                        Toast.makeText(
+                                            requireContext(),
+                                            getString(R.string.billing_api_error),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        return@launch
+                                    }
+
+                                binding.tvRealValue.text = skuDetails.price
+
+                                binding.btnGetPremium.setOnClickListener {
                                     binding.btnPremium.visibility = View.GONE
                                     binding.progressbar.visibility = View.VISIBLE
 
                                     val flowParams = BillingFlowParams.newBuilder()
                                         .setSkuDetails(
-                                            skuDetailsResult.skuDetailsList?.get(0)
-                                                ?: SkuDetails("android.test.purchased")
+                                            skuDetails
                                         )
                                         .build()
                                     val responseCode = billingClient.launchBillingFlow(
@@ -184,18 +209,6 @@ class PremiumFragment : Fragment() {
                                             startBillingConnection(billingClient, false)
                                         }
                                     }
-                                }
-
-                                if (PremiumStatus.isPremium(requireContext())) {
-                                    binding.tvBePremium.text = getString(R.string.you_are_premium)
-                                    binding.tvPremiumDesc.text = getString(R.string.premium_thanks)
-                                    binding.tvPremiumAdvantages.visibility = View.GONE
-                                    binding.btnPremium.visibility = View.GONE
-                                    binding.progressbar.visibility = View.GONE
-
-                                } else {
-                                    binding.btnPremium.visibility = View.VISIBLE
-                                    binding.progressbar.visibility = View.GONE
                                 }
                             }
                         }

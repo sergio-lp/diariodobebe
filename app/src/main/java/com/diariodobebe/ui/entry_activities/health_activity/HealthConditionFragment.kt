@@ -36,6 +36,7 @@ class HealthConditionFragment : Fragment() {
         symptoms.add(getString(R.string.no_symptom_added))
 
         binding.edHealthDate.setOnClickListener {
+            binding.edHealthDate.error = null
             binding.edHealthDate.requestFocus()
             val calendarConstraints = CalendarConstraints.Builder().setValidator(
                 DateValidatorPointBackward.now()
@@ -51,7 +52,7 @@ class HealthConditionFragment : Fragment() {
                 var dateToSet: Long = date
 
                 if (!binding.edHealthTime.text.isNullOrEmpty()) {
-                    val hour = SimpleDateFormat("HH:mm")
+                    val hour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
                     hour.timeZone = TimeZone.getTimeZone("UTC")
                     dateToSet += hour.parse(binding.edHealthTime.text.toString())!!.time
                 }
@@ -66,6 +67,7 @@ class HealthConditionFragment : Fragment() {
         }
 
         binding.edHealthTime.setOnClickListener {
+            binding.edHealthTime.error = null
             val timePickerDialog = MaterialTimePicker.Builder()
                 .setTitleText(getString(R.string.pick_time_hint))
                 .build()

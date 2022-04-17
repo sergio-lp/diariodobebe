@@ -12,6 +12,8 @@ class Health(
     var medAmount: Int?,
     var temperature: Int?,
     var mood: Int?,
+    var medTime: Long?,
+    var vitalsTime: Long?,
     var symptoms: Array<String>? = null
 ) : Entry(id, date, type, comment) {
     constructor(parcel: Parcel) : this(
@@ -24,6 +26,8 @@ class Health(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readLong(),
+        parcel.readLong(),
         null
     ) {
         parcel.readStringArray(symptoms!!)
@@ -39,6 +43,8 @@ class Health(
         parcel.writeInt(medAmount ?: 0)
         parcel.writeInt(temperature ?: 0)
         parcel.writeInt(mood ?: 0)
+        parcel.writeLong(medTime ?: 0)
+        parcel.writeLong(vitalsTime ?: 0)
         parcel.writeStringArray(symptoms)
     }
 

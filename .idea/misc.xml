@@ -37,12 +37,12 @@
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_add_feeding.xml" value="0.67" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_add_health.xml" value="0.75" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_add_measure.xml" value="0.6" />
-        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_add_sleep.xml" value="0.6" />
+        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_add_sleep.xml" value="0.25" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_diaper.xml" value="0.3625" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_empty.xml" value="0.20521590423257802" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_event.xml" value="0.25" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_main.xml" value="0.20521590423257802" />
-        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_picture.xml" value="0.6460296096904441" />
+        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_picture.xml" value="0.1461187214611872" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/activity_settings.xml" value="0.2" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/app_bar_main.xml" value="0.264" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/blog_fragment.xml" value="0.25" />
@@ -54,14 +54,15 @@
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_bottle.xml" value="0.6" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_food.xml" value="0.33" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_health_condition.xml" value="0.2359375" />
-        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_home.xml" value="0.9" />
+        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_medication.xml" value="0.25" />
-        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_premium.xml" value="0.25" />
+        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_premium.xml" value="0.22" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_report.xml" value="0.25" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_sleep_report.xml" value="0.25" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/fragment_vitals.xml" value="0.264" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/nav_header_main.xml" value="0.72" />
-        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/view_activity_entry.xml" value="0.264" />
+        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/view_activity_entry.xml" value="0.22" />
+        <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/view_premium_offer.xml" value="0.2" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/layout/view_symptom.xml" value="0.25" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/menu/main_menu.xml" value="1.0" />
         <entry key="..\:/StudioProjects/diariodobebe/app/src/main/res/menu/menu_drawer.xml" value="0.5" />

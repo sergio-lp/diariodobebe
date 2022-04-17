@@ -10,13 +10,53 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_vital_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/vital_date"
+            android:labelFor="@id/ed_vital_date">
+
+            <EditText
+                android:id="@+id/ed_vital_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:inputType="none"
+                tools:ignore="TextFields" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_vital_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/vital_time"
+            android:labelFor="@id/ed_vital_time">
+
+            <EditText
+                android:id="@+id/ed_vital_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_vitals" />
 
 

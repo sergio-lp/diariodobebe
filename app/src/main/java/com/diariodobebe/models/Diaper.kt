@@ -32,5 +32,6 @@ class Diaper(
         const val STATE_DRY = 0
         const val STATE_PEE = 1
         const val STATE_POOP = 2
+        const val STATE_BOTH = 3
     }
 }
