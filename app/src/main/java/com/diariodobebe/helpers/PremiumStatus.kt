@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.content.edit
 import com.diariodobebe.R
 import com.diariodobebe.ui.main_activity.EmptyActivity
+import com.diariodobebe.ui.main_activity.home.HomeViewModel
 import com.google.android.gms.ads.AdView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -38,7 +39,10 @@ class PremiumStatus {
         @SuppressLint("InflateParams")
         fun showPremiumOffer(
             inflater: LayoutInflater,
-            title: String = inflater.context.getString(R.string.tv_offer_description)
+            title: String = inflater.context.getString(
+                R.string.tv_offer_description,
+                HomeViewModel.DIAS_PARA_VERSAO_FREE
+            )
         ) {
             val view = inflater.inflate(R.layout.view_premium_offer, null, false)
             view.findViewById<TextView>(R.id.tv_offer_title).text = title

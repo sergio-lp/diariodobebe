@@ -376,8 +376,10 @@ class SettingsActivity : AppCompatActivity() {
             ).show()
         } catch (e: Exception) {
             Log.e("TAG", "exportFile: ", e)
-            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                this, getString(R.string.error),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

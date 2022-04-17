@@ -54,8 +54,7 @@
                     android:layout_height="110dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/baby_photo" />
+                    android:scaleType="centerCrop"/>
 
             </androidx.cardview.widget.CardView>
 
