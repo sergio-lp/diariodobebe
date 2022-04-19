@@ -1,6 +1,5 @@
 package com.diariodobebe.ui.main_activity.premium
 
-import android.icu.util.Currency
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -46,9 +45,6 @@ class PremiumFragment : Fragment() {
             binding.btnPremium.visibility = View.GONE
             binding.progressbar.visibility = View.GONE
 
-        } else {
-            binding.btnPremium.visibility = View.VISIBLE
-            binding.progressbar.visibility = View.GONE
         }
 
         billingClient = BillingClient.newBuilder(requireContext())
@@ -68,8 +64,6 @@ class PremiumFragment : Fragment() {
     }
 
     private fun processPurchase(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
-        binding.btnPremium.visibility = View.VISIBLE
-        binding.progressbar.visibility = View.GONE
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
             if (!purchases.isNullOrEmpty()) {
                 purchases.forEach { purchase ->
@@ -118,6 +112,9 @@ class PremiumFragment : Fragment() {
                         }
                     }
                 }
+            } else {
+                binding.btnPremium.visibility = View.VISIBLE
+                binding.progressbar.visibility = View.GONE
             }
         }
     }
@@ -143,7 +140,7 @@ class PremiumFragment : Fragment() {
                         val skuList = ArrayList<String>()
                         skuList.add("android.test.purchased")
                         val params = SkuDetailsParams.newBuilder()
-                        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
+                        params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
 
                         lifecycleScope.launch {
                             val skuDetailsResult = withContext(Dispatchers.IO) {
@@ -152,8 +149,6 @@ class PremiumFragment : Fragment() {
 
                             if (skuDetailsResult.billingResult.responseCode != BillingClient.BillingResponseCode.OK
                             ) {
-                                Log.e("TAG", "processPurchase: 4")
-
                                 Snackbar.make(
                                     binding.root,
                                     getString(R.string.billing_api_error),
@@ -178,6 +173,11 @@ class PremiumFragment : Fragment() {
                                     }
 
                                 binding.tvRealValue.text = skuDetails.price
+
+                                if (!PremiumStatus.isPremium(requireContext())) {
+                                    binding.btnPremium.visibility = View.VISIBLE
+                                    binding.progressbar.visibility = View.GONE
+                                }
 
                                 binding.btnGetPremium.setOnClickListener {
                                     binding.btnPremium.visibility = View.GONE

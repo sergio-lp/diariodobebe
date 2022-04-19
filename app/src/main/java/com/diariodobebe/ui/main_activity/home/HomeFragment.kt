@@ -2,25 +2,31 @@ package com.diariodobebe.ui.main_activity.home
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.animation.DecelerateInterpolator
+import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.children
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.iterator
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.diariodobebe.PREF_SHOW_SPOTLIGHT
 import com.diariodobebe.R
 import com.diariodobebe.adapters.EntryAdapter
 import com.diariodobebe.databinding.FragmentHomeBinding
@@ -35,24 +41,29 @@ import com.diariodobebe.ui.entry_activities.health_activity.AddHealthActivity
 import com.diariodobebe.ui.entry_activities.measurement_activity.AddMeasureActivity
 import com.diariodobebe.ui.entry_activities.picture_activity.PictureActivity
 import com.diariodobebe.ui.entry_activities.sleep_activity.AddSleepActivity
+import com.diariodobebe.ui.main_activity.EmptyActivity
 import com.diariodobebe.ui.main_activity.premium.PremiumViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.takusemba.spotlight.Spotlight
+import com.takusemba.spotlight.Target
+import com.takusemba.spotlight.shape.RoundedRectangle
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
-
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private var entryList: MutableList<Entry> = mutableListOf()
-    private var entryIdList: MutableList<Int> = mutableListOf()
-    private lateinit var viewModel: HomeViewModel
+
     private var isFabExpanded = false
     private var isBabyAlreadySet = false
 
+    private lateinit var viewModel: HomeViewModel
     private lateinit var premiumViewModel: PremiumViewModel
+
+    private var entryList: MutableList<Entry> = mutableListOf()
+    private var entryIdList: MutableList<Int> = mutableListOf()
 
     private val fromBottomAnim: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -66,6 +77,8 @@ class HomeFragment : Fragment() {
             R.anim.to_bottom_anim
         )
     }
+
+    private var shouldShowSpotlight = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,6 +117,13 @@ class HomeFragment : Fragment() {
                 MobileAds.initialize(requireContext())
                 binding.adView.loadAd(AdRequest.Builder().build())
             }
+
+            shouldShowSpotlight = requireActivity().getSharedPreferences(
+                getString(R.string.PREFS),
+                Context.MODE_PRIVATE
+            )
+                .getBoolean(PREF_SHOW_SPOTLIGHT, true)
+
         }
 
         premiumViewModel = PremiumViewModel(requireActivity().application)
@@ -220,6 +240,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         binding.swipeRefresh.isRefreshing = true
         entryList = mutableListOf()
         entryIdList = mutableListOf()
@@ -239,6 +260,11 @@ class HomeFragment : Fragment() {
                 binding.tvOfferDescription.text =
                     getString(R.string.tv_offer_description, HomeViewModel.DIAS_PARA_VERSAO_FREE)
                 binding.premiumOffer.visibility = View.VISIBLE
+                binding.btnPremiumUnlock.setOnClickListener {
+                    val intent = Intent(requireContext(), EmptyActivity::class.java)
+                    intent.putExtra(EmptyActivity.FRAGMENT, EmptyActivity.PREMIUM)
+                    startActivity(intent)
+                }
                 binding.btnDismissOffer.setOnClickListener {
                     binding.premiumOffer.visibility = View.GONE
                 }
@@ -252,19 +278,68 @@ class HomeFragment : Fragment() {
                     binding.rvBabyTimeline.apply {
                         layoutManager = LinearLayoutManager(context)
                         setHasFixedSize(false)
-                        adapter = EntryAdapter(entryList)
+                        adapter = EntryAdapter(entryList, binding.root)
                         visibility = View.VISIBLE
                     }
                     binding.llNoBaby.visibility = View.GONE
                     binding.llNoEntry.visibility = View.GONE
                 } else {
                     binding.rvBabyTimeline.adapter =
-                        EntryAdapter(entryList)
+                        EntryAdapter(entryList, binding.root)
+                }
 
-                    for (e in entryList) {
-                        Log.e("TAG", "onResume: ${1}")
+                if (shouldShowSpotlight) {
+                    binding.rvBabyTimeline.doOnPreDraw {
+                        val view = binding.rvBabyTimeline.layoutManager?.findViewByPosition(0)
+                        view?.doOnPreDraw {
+                            val layout = FrameLayout(requireContext())
+                            val spotlightView = it.findViewById<View>(R.id.root)
+                            val spotlight = Spotlight.Builder(requireActivity())
+                                .setBackgroundColor(
+                                    ResourcesCompat.getColor(
+                                        resources,
+                                        R.color.spotlightBackground,
+                                        null
+                                    )
+                                )
+                                .setDuration(1000L)
+                                .setAnimation(DecelerateInterpolator(2f))
+                                .setContainer(binding.root)
+                                .setTargets(
+                                    Target.Builder()
+                                        .setAnchor(spotlightView)
+                                        .setShape(
+                                            RoundedRectangle(
+                                                (spotlightView.height).toFloat() + 40,
+                                                (spotlightView.width).toFloat() + 50,
+                                                30f
+                                            )
+                                        )
+                                        .setOverlay(
+                                            layoutInflater.inflate(
+                                                R.layout.layout_target,
+                                                layout,
+                                                true
+                                            )
+                                        )
+                                        .build()
+                                )
+                                .build()
+
+                            spotlight.start()
+                            layout.setOnClickListener {
+                                MainScope().launch {
+                                    requireActivity().getSharedPreferences(getString(R.string.PREFS), Context.MODE_PRIVATE).edit {
+                                        putBoolean(PREF_SHOW_SPOTLIGHT, false)
+                                    }
+                                    spotlight.finish()
+                                    shouldShowSpotlight = false
+                                }
+                            }
+                        }
                     }
                 }
+
             } else {
                 binding.rvBabyTimeline.visibility = View.GONE
                 binding.llNoBaby.visibility = View.GONE
@@ -301,7 +376,6 @@ class HomeFragment : Fragment() {
 
             })
 
-
             val baby = viewModel.baby
             if (!isBabyAlreadySet) {
                 if (baby != null) {
@@ -316,6 +390,8 @@ class HomeFragment : Fragment() {
             }
 
             binding.swipeRefresh.isRefreshing = false
+
+
         }
 
         premiumViewModel.checkPurchases()
@@ -326,6 +402,7 @@ class HomeFragment : Fragment() {
         (binding.fab.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         (binding.fab.layoutParams as RelativeLayout.LayoutParams).removeRule(RelativeLayout.ABOVE)
         binding.root.removeView(binding.adView)
+        binding.premiumOffer.visibility = View.GONE
     }
 
     override fun onDestroyView() {

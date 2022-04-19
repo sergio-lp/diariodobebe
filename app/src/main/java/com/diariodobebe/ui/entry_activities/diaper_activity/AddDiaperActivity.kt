@@ -5,6 +5,7 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.diariodobebe.EXTRA_ENTRY
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddDiaperBinding
 import com.diariodobebe.helpers.GetBaby
@@ -23,8 +24,8 @@ import java.util.*
 
 class AddDiaperActivity : AppCompatActivity() {
     private var finalDate: Long = 0
-
     private lateinit var binding: ActivityAddDiaperBinding
+    private var entryId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,7 +118,7 @@ class AddDiaperActivity : AppCompatActivity() {
         binding.btnAddDiaper.setOnClickListener {
             if (checkNecessaryEds(binding.edDiaperTime, binding.edDiaperDate)) {
                 val diaper = Diaper(
-                    null,
+                    entryId,
                     finalDate,
                     Entry.EntryType.ENTRY_DIAPER,
                     binding.edDiaperComment.text.toString(),
@@ -134,6 +135,34 @@ class AddDiaperActivity : AppCompatActivity() {
         } else {
             MobileAds.initialize(this)
             binding.adView.loadAd(AdRequest.Builder().build())
+        }
+
+        intent.extras?.getParcelable<Diaper>(EXTRA_ENTRY).let {
+            val diaper = it ?: run {
+                return@let
+            }
+
+            supportActionBar?.title = getString(R.string.edit_entry)
+
+            entryId = diaper.id
+
+            val dfDate = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+            val dfHour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+
+            dfDate.timeZone = TimeZone.getTimeZone("UTC")
+            dfHour.timeZone = TimeZone.getTimeZone("UTC")
+
+            binding.edDiaperDate.setText(dfDate.format(diaper.date))
+            binding.edDiaperTime.setText(dfHour.format(diaper.date))
+
+            binding.btnAddDiaper.text = getString(R.string.edit_entry)
+
+            finalDate = diaper.date ?: 0
+
+            binding.edDiaperBrand.setText(diaper.diaperBrand)
+            binding.edDiaperComment.setText(diaper.comment)
+            binding.spinnerDiaperState.setSelection(diaper.state ?: 0)
+
         }
     }
 

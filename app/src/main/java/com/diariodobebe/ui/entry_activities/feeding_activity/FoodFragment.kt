@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.diariodobebe.EXTRA_ENTRY
 import com.diariodobebe.R
 import com.diariodobebe.databinding.FragmentFoodBinding
 import com.diariodobebe.helpers.GetBaby
@@ -21,8 +22,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class FoodFragment : Fragment() {
-    private var finalDate: Long = 0
-
+    var finalDate: Long? = null
+    var entryId: Int? = null
     private var _binding: FragmentFoodBinding? = null
     private val binding get() = _binding!!
 
@@ -113,7 +114,7 @@ class FoodFragment : Fragment() {
             ) {
 
                 val feeding = Feeding(
-                    null,
+                    entryId,
                     finalDate,
                     Entry.EntryType.ENTRY_FEEDING,
                     binding.edFoodComment.text.toString(),
@@ -124,6 +125,26 @@ class FoodFragment : Fragment() {
                 GetBaby.insertEntry(feeding, requireActivity())
             }
 
+        }
+
+        arguments?.getParcelable<Feeding>(EXTRA_ENTRY)?.let {
+            binding.edFoodType.setText(it.foodType)
+            binding.edFoodComment.setText(it.comment)
+
+            entryId = it.id
+
+            val dfDate = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+            val dfHour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+
+            dfDate.timeZone = TimeZone.getTimeZone("UTC")
+            dfHour.timeZone = TimeZone.getTimeZone("UTC")
+
+            binding.edFeedingDate.setText(dfDate.format(it.date))
+            binding.edFeedingStart.setText(dfHour.format(it.date))
+
+            finalDate = it.date ?: 0
+
+            binding.btnAddFeeding.text = getString(R.string.edit_entry)
         }
 
         return root

@@ -1,8 +1,5 @@
 package com.diariodobebe.models
 
-import android.os.Parcel
-import android.os.Parcelable
-
 class Baby(
     var id: Int?,
     var name: String?,
@@ -11,45 +8,12 @@ class Baby(
     var picPath: String?,
     var lastEntryId: Int?,
     var entryList: MutableList<Entry>?
-) : Parcelable {
+) {
 
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(), //ID
-        parcel.readString(), //NAME
-        parcel.readInt(), //SEX
-        parcel.readLong(), //BIRTHDATE
-        parcel.readString(), //PICPATH
-        parcel.readInt(), //LASTENTRYID
-        parcel.createTypedArrayList(Entry.CREATOR) //ENTRYLIST
-    )
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    override fun writeToParcel(parcel: Parcel, p1: Int) {
-        parcel.writeInt(id ?: 0)
-        parcel.writeString(name)
-        parcel.writeInt(sex ?: 0)
-        parcel.writeLong(birthDate ?: 0)
-        parcel.writeString(picPath)
-        parcel.writeInt(lastEntryId ?: 0)
-        parcel.writeList(entryList)
-    }
 
     object BabyGender {
         const val BABY_GENDER_MALE = 0
         const val BABY_GENDER_FEMALE = 1
-    }
-
-    companion object CREATOR : Parcelable.Creator<Baby> {
-        override fun createFromParcel(parcel: Parcel): Baby {
-            return Baby(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Baby?> {
-            return arrayOfNulls(size)
-        }
     }
 
 }

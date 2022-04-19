@@ -206,4 +206,16 @@
     <string name="vital_time">Hora de aferição (opcional)</string>
     <string name="at_time">em</string>
     <string name="not_informed">Não adicionado</string>
+    <string name="picker_title">Selecionar imagem</string>
+    <string name="edit_pic">Cortar imagem</string>
+    <string name="delete_entry">Remover registro</string>
+    <string name="edit">Editar</string>
+    <string name="more_options">Mais opções</string>
+    <string name="remove">Remover</string>
+    <string name="undo">Desfazer</string>
+    <string name="deleted">Registro removido</string>
+    <string name="edit_entry">Editar registro</string>
+    <string name="new_journal">Esse é seu registro no diário!</string>
+    <string name="hold_to_edit">Toque nele e segure para editar ou excluir</string>
+    <string name="yearly">/ano</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.diariodobebe.models
 
 import android.os.Parcel
+import android.os.Parcelable
 import java.util.*
 
 class Feeding(
@@ -14,7 +15,7 @@ class Feeding(
     var milliliters: Int? = 0,
     var foodType: String? = ""
 
-) : Entry(id, date, type, comment) {
+) : Entry(id, date, type, comment), Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readLong(),
@@ -43,5 +44,19 @@ class Feeding(
         const val FEEDING_BOTTLE = 0
         const val FEEDING_BREAST = 1
         const val FEEDING_FOOD = 2
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Feeding> {
+        override fun createFromParcel(parcel: Parcel): Feeding {
+            return Feeding(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Feeding?> {
+            return arrayOfNulls(size)
+        }
     }
 }

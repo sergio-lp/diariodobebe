@@ -4,16 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.graphics.drawable.toBitmap
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.options
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddBabyBinding
 import com.diariodobebe.helpers.PremiumStatus
@@ -34,29 +34,42 @@ import java.nio.charset.StandardCharsets
 import java.text.DateFormat
 import java.util.*
 
+
 class AddBabyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddBabyBinding
     private var gender: Int? = null
     private var babyBirthday: Long? = null
     private var picBitmap: Bitmap? = null
-    private val registerForResult =
+
+    /*private val registerPickerIntent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                try {
-                    val uri = it.data?.data
-                    val stream = contentResolver.openInputStream(uri!!)
-                    picBitmap = BitmapFactory.decodeStream(stream)
-                    binding.btnBabyPic.setPadding(0, 0, 0, 0)
-                    binding.btnBabyPic.setImageBitmap(picBitmap)
-                } catch (e: Exception) {
+                val uri = it.data?.data ?: run {
                     Toast.makeText(
-                        this, getString(R.string.error),
-                        Toast.LENGTH_LONG
+                        applicationContext,
+                        getString(R.string.error),
+                        Toast.LENGTH_SHORT
                     ).show()
-                    Log.e("TAG", "Error: AddBabyActivity PhotoPicker ", e)
+                    return@registerForActivityResult
                 }
             }
+        }*/
+
+    private val registerCropIntent = registerForActivityResult(CropImageContract()) {
+        if (it.isSuccessful) {
+            val uri = it.uriContent ?: run {
+                Toast.makeText(applicationContext, getString(R.string.error), Toast.LENGTH_SHORT)
+                    .show()
+                return@registerForActivityResult
+            }
+
+
+            picBitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
+            binding.btnBabyPic.setPadding(0, 0, 0, 0)
+            binding.btnBabyPic.setImageBitmap(picBitmap)
         }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +96,7 @@ class AddBabyActivity : AppCompatActivity() {
             binding.tvMale.setTypeface(null, Typeface.BOLD)
             binding.tvFemale.setTypeface(null, Typeface.NORMAL)
         }
+
         binding.btnFemale.setOnClickListener {
             this.gender = Baby.BabyGender.BABY_GENDER_FEMALE
             binding.tvBabySex.text = getString(R.string.sex_template, getString(R.string.girl))
@@ -98,7 +112,6 @@ class AddBabyActivity : AppCompatActivity() {
             binding.tvMale.setTypeface(null, Typeface.NORMAL)
             binding.tvFemale.setTypeface(null, Typeface.BOLD)
         }
-
 
         binding.edBabyBirthdate.setOnClickListener {
             val calConstraints = CalendarConstraints.Builder()
@@ -123,14 +136,25 @@ class AddBabyActivity : AppCompatActivity() {
         }
 
         binding.btnBabyPic.setOnClickListener {
-            try {
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.type = "image/*"
-                registerForResult.launch(intent)
-            } catch (e: Exception) {
-                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_LONG).show()
-                Log.e("TAG", "onCreate: ", e)
-            }
+            /*val file = getExternalFilesDir(Environment.DIRECTORY_DCIM)
+            val cameraOutputUri = Uri.fromFile(file)
+            val cameraIntent = getPickIntent(cameraOutputUri)
+
+            registerPickerIntent.launch(cameraIntent)*/
+
+            registerCropIntent.launch(
+                options {
+                    setCropShape(CropImageView.CropShape.OVAL)
+                    setAspectRatio(1, 1)
+                    setActivityMenuIconColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.black
+                        )
+                    )
+                    this.setActivityTitle(getString(R.string.edit_pic))
+                }
+            )
         }
 
         binding.btnAddBaby.setOnClickListener {
@@ -152,6 +176,36 @@ class AddBabyActivity : AppCompatActivity() {
             binding.adView.loadAd(AdRequest.Builder().build())
         }
     }
+
+    /*private fun getPickIntent(cameraOutputUri: Uri): Intent? {
+        val intents =
+            mutableListOf(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI))
+        setCameraIntents(intents, cameraOutputUri)
+        if (intents.isEmpty()) return null
+        val result = Intent.createChooser(intents.removeAt(0), null)
+        if (intents.isNotEmpty()) {
+            result.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toTypedArray())
+        }
+        return result
+    }*/
+
+    /*private fun setCameraIntents(cameraIntents: MutableList<Intent>, output: Uri) {
+        val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val packageManager = packageManager
+        val listCam = packageManager.queryIntentActivities(captureIntent, 0)
+        for (res in listCam) {
+            val packageName = res.activityInfo.packageName
+            val intent = Intent(captureIntent)
+            intent.component = ComponentName(res.activityInfo.packageName, res.activityInfo.name)
+            intent.setPackage(packageName)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, output)
+            cameraIntents.add(intent)
+        }
+
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        cameraIntents.add(intent)
+    }*/*/
 
     override fun onResume() {
         Snackbar.make(binding.root, getString(R.string.please_add_baby), Snackbar.LENGTH_LONG)

@@ -1,6 +1,7 @@
 package com.diariodobebe.models
 
 import android.os.Parcel
+import android.os.Parcelable
 import java.util.*
 
 class Photo(
@@ -9,7 +10,7 @@ class Photo(
     type: Int?,
     comment: String?,
     var path: String?
-) : Entry(id, date, type, comment) {
+) : Entry(id, date, type, comment), Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readLong(),
@@ -29,6 +30,20 @@ class Photo(
     companion object {
         const val EXTRA_PATH: String = "photo_path"
         const val EXTRA_HAS_PHOTO = "has_photo"
-        const val EXTRA_PHOTO = "photo"
+
+        @JvmField
+        val CREATOR: Parcelable.Creator<Photo> = object : Parcelable.Creator<Photo> {
+            override fun createFromParcel(parcel: Parcel): Photo {
+                return Photo(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Photo?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
+
+    override fun describeContents(): Int {
+        return 0
     }
 }

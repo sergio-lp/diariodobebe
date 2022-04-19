@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.diariodobebe.EXTRA_ENTRY
 import com.diariodobebe.R
 import com.diariodobebe.databinding.FragmentMedicationBinding
+import com.diariodobebe.models.Health
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -98,6 +100,26 @@ class MedicationFragment : Fragment() {
                 finalDate = dateToSet
             }
 
+        }
+
+        arguments?.getParcelable<Health>(EXTRA_ENTRY)?.let { health ->
+            val dfDate = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+            val dfHour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+
+            if (health.medAmount != null && health.medAmount != 0) {
+                binding.edMedAmount.setText(
+                    health.medAmount.toString()
+                )
+            }
+
+            if (health.medTime != null && health.medTime != 0.toLong()) {
+                finalDate = health.medTime
+                binding.edMedicationDate.setText(dfDate.format(health.medTime))
+                binding.edMedicationTime.setText(dfHour.format(health.medTime))
+            }
+
+
+            binding.edMedName.setText(health.medication)
         }
 
         return binding.root

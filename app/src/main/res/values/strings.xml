@@ -223,4 +223,16 @@
     <string name="vital_time">Time of detection (optional)</string>
     <string name="at_time">at</string>
     <string name="not_informed">Not added</string>
+    <string name="picker_title">Pick a image file</string>
+    <string name="edit_pic">Crop the photo</string>
+    <string name="delete_entry">Remove entry</string>
+    <string name="edit">Edit</string>
+    <string name="more_options">More options</string>
+    <string name="remove">Remove</string>
+    <string name="undo">Undo</string>
+    <string name="deleted">Entry deleted</string>
+    <string name="edit_entry">Edit entry</string>
+    <string name="new_journal">This is your journal entry!</string>
+    <string name="hold_to_edit">Touch and hold on it to edit or delete this entry.</string>
+    <string name="yearly">/year</string>
 </resources>

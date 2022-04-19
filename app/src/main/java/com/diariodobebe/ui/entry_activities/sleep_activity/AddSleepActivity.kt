@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.diariodobebe.EXTRA_ENTRY
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddSleepBinding
 import com.diariodobebe.helpers.GetBaby
@@ -22,7 +23,7 @@ import java.util.*
 
 class AddSleepActivity : AppCompatActivity() {
     private var finalDate: Long = 0
-
+    private var entryId: Int? = null
     private lateinit var binding: ActivityAddSleepBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,7 +108,7 @@ class AddSleepActivity : AppCompatActivity() {
         binding.btnAddSleep.setOnClickListener {
             if (checkEditTexts(binding.edSleepTime, binding.edSleepDate, binding.edSleepDuration)) {
                 val sleep = Sleep(
-                    null,
+                    entryId,
                     finalDate,
                     Entry.EntryType.ENTRY_SLEEP,
                     binding.edSleepComment.text.toString(),
@@ -123,6 +124,32 @@ class AddSleepActivity : AppCompatActivity() {
         } else {
             MobileAds.initialize(this)
             binding.adView.loadAd(AdRequest.Builder().build())
+        }
+
+        intent.extras?.getParcelable<Sleep>(EXTRA_ENTRY).let {
+            val sleep = it ?: run {
+                return@let
+            }
+
+            supportActionBar?.title = getString(R.string.edit_entry)
+
+            entryId = it.id
+
+            binding.edSleepDuration.setText(sleep.duration.toString())
+            binding.edSleepComment.setText(sleep.comment)
+
+            val dfDate = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+            val dfHour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+
+            dfDate.timeZone = TimeZone.getTimeZone("UTC")
+            dfHour.timeZone = TimeZone.getTimeZone("UTC")
+
+            binding.edSleepDate.setText(dfDate.format(sleep.date))
+            binding.edSleepTime.setText(dfHour.format(sleep.date))
+
+            finalDate = sleep.date ?: 0
+
+            binding.btnAddSleep.text = getString(R.string.edit_entry)
         }
     }
 

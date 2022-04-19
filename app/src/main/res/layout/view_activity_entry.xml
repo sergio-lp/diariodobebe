@@ -19,7 +19,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/layout_entry_line"
@@ -50,6 +50,7 @@
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:orientation="vertical"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/layout_entry_line"
@@ -219,35 +220,30 @@
                             android:id="@+id/tv_health_entry_condition"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:text="@string/health_condition" />
 
                         <TextView
                             android:id="@+id/tv_health_entry_symptoms"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:text="@string/health_symptoms" />
 
                         <TextView
                             android:id="@+id/tv_health_entry_mood"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:text="@string/health_mood" />
 
                         <TextView
                             android:id="@+id/tv_health_entry_med"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:text="@string/health_medication" />
 
                         <TextView
                             android:id="@+id/tv_health_entry_quantity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:text="@string/health_med_quantity" />
 
                         <TextView
@@ -255,7 +251,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/health_temperature" />
-
 
                     </LinearLayout>
 
@@ -295,8 +290,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="16dp"
-                        android:visibility="gone"
-                        android:text="@string/view_photo" />
+                        android:text="@string/view_photo"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/ll_comment"

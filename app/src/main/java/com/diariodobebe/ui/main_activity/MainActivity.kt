@@ -101,7 +101,6 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-
     private fun getBabyData(viewModel: MainViewModel) {
         lifecycleScope.launch {
             viewModel.loadBaby()

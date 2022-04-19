@@ -21,4 +21,7 @@
     <color name="colorGenderFemaleSelected">#D66C6C</color>
     <color name="color_mask">#C92B2B2B</color>
     <color name="color_transparent">#004A4A4A</color>
+    <color name="dark_gray">#131313</color>
+    <color name="yellow_selected">#61FFF9C5</color>
+    <color name="spotlightBackground">#D3302C2C</color>
 </resources>

@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.diariodobebe.EXTRA_ENTRY
 import com.diariodobebe.R
 import com.diariodobebe.adapters.SymptomAdapter
 import com.diariodobebe.databinding.FragmentHealthConditionBinding
+import com.diariodobebe.models.Health
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -21,7 +23,7 @@ import java.util.*
 
 class HealthConditionFragment : Fragment() {
     var symptoms = mutableListOf<String>()
-    var finalDate: Long = 0
+    var finalDate: Long? = 0
 
     private var _binding: FragmentHealthConditionBinding? = null
     val binding get() = _binding!!
@@ -132,6 +134,32 @@ class HealthConditionFragment : Fragment() {
                         binding.rvSymptoms.adapter?.notifyItemChanged(symptoms.indexOf(ed.text.toString()))
                     }
                 }.create().show()
+        }
+
+
+        arguments?.getParcelable<Health>(EXTRA_ENTRY)?.let { health ->
+            finalDate = health.date
+            binding.edHealthCondition.setText(health.healthEvent)
+            binding.edHealthComment.setText(health.comment)
+
+            health.symptoms?.forEach { symptom ->
+                symptoms.add(symptom)
+                binding.rvSymptoms.adapter?.notifyItemChanged(symptoms.lastIndex)
+            }
+
+            if (symptoms.size > 1) {
+                symptoms.removeAt(0)
+                binding.rvSymptoms.adapter?.notifyItemRemoved(0)
+            }
+
+            val dfDate = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+            val dfHour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+
+            dfDate.timeZone = TimeZone.getTimeZone("UTC")
+            dfHour.timeZone = TimeZone.getTimeZone("UTC")
+
+            binding.edHealthDate.setText(dfDate.format(health.date))
+            binding.edHealthTime.setText(dfHour.format(health.date))
         }
 
         return root

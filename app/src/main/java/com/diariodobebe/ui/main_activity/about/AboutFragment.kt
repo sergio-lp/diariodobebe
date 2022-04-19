@@ -43,6 +43,7 @@ class AboutFragment : Fragment() {
                     HtmlCompat.fromHtml(
                         "App icon (baby bottle) by <a href=\"https://elements.envato.com/user/alexdndz?utm_source=reshot&utm_medium=referral&utm_campaign=elements_reshot_icon_item_page\">@alexdndz</a> at <a href=\"https://www.reshot.com/free-svg-icons/item/baby-bottle-VJTL2RMS9X/\">Reshot</a>" +
                                 "<br><br><a href=\"https://github.com/Baseflow/PhotoView\">PhotoView by Chris Banes under Apache License 2.0 - 2018</a>" +
+                                "<br><br><a href=\"https://github.com/Dhaval2404/ImagePicker\">ImagePicker by Dhaval Patel under Apache License 2.0 - 2021</a>" +
                                 "<br><br><a href=\"https://github.com/AppIntro/AppIntro\">App Intro by App Intro Developers under Apache License 2.0 - 2015-2020</a>" +
                                 "<br><br><b>Icons by:</b><br><a href=\"https://www.flaticon.com/free-icons/baby\" title=\"baby icons\">Baby icons created by Freepik - Flaticon</a><br>" +
                                 "<a href=\"https://www.flaticon.com/free-icons/camera\" title=\"camera icons\">Camera icons created by Freepik - Flaticon</a>" +

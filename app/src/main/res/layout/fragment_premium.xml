@@ -62,20 +62,20 @@
             app:layout_constraintTop_toBottomOf="@id/tv_premium_advantages" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/btn_premium"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_premium_advantages">
 
             <RelativeLayout
+                android:id="@+id/btn_premium"
                 android:layout_width="match_parent"
-                android:background="@color/colorPrimaryLight"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
+                android:background="@color/colorPrimaryLight"
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_real_value"
@@ -83,8 +83,21 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
+                    android:text="@string/edit"
                     android:textColor="@color/colorPrimaryDarker"
                     android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/tv_real_value"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:layout_toEndOf="@id/tv_real_value"
+                    android:text="@string/yearly"
+                    android:textColor="@color/colorPrimaryDarker"
                     android:textStyle="bold" />
 
                 <Button

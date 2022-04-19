@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.diariodobebe.EXTRA_ENTRY
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddMeasureBinding
 import com.diariodobebe.helpers.GetBaby
@@ -23,6 +24,7 @@ import java.util.*
 class AddMeasureActivity : AppCompatActivity() {
     private var finalDate: Long = 0
     private var wantsToProceed: Boolean = true
+    private var entryId: Int? = null
 
     private lateinit var binding: ActivityAddMeasureBinding
 
@@ -104,7 +106,7 @@ class AddMeasureActivity : AppCompatActivity() {
             }
 
         }
-        
+
         binding.btnAddMeasure.setOnClickListener {
             wantsToProceed =
                 checkEditTexts(
@@ -116,7 +118,7 @@ class AddMeasureActivity : AppCompatActivity() {
 
             if (wantsToProceed) {
                 val measure = Measure(
-                    null,
+                    entryId,
                     finalDate,
                     Entry.EntryType.ENTRY_MEASUREMENT,
                     binding.edMeasureComment.text.toString(),
@@ -133,6 +135,33 @@ class AddMeasureActivity : AppCompatActivity() {
         } else {
             MobileAds.initialize(this)
             binding.adView.loadAd(AdRequest.Builder().build())
+        }
+
+        intent.extras?.getParcelable<Measure>(EXTRA_ENTRY).let {
+            val measure = it ?: run {
+                return@let
+            }
+
+            supportActionBar?.title = getString(R.string.edit_entry)
+
+            entryId = it.id
+
+            binding.edMeasureHeight.setText(measure.height.toString())
+            binding.edMeasureWeight.setText(measure.weight.toString())
+            binding.edMeasureComment.setText(measure.comment)
+
+            val dfDate = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+            val dfHour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+
+            dfDate.timeZone = TimeZone.getTimeZone("UTC")
+            dfHour.timeZone = TimeZone.getTimeZone("UTC")
+
+            binding.edMeasureDate.setText(dfDate.format(measure.date))
+            binding.edMeasureTime.setText(dfHour.format(measure.date))
+
+            finalDate = measure.date ?: 0
+
+            binding.btnAddMeasure.text = getString(R.string.edit_entry)
         }
     }
 

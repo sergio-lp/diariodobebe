@@ -37,6 +37,8 @@
         <activity
             android:name=".ui.entry_activities.health_activity.AddHealthActivity"
             android:exported="false" />
+
+
         <activity
             android:name=".ui.entry_activities.sleep_activity.AddSleepActivity"
             android:exported="false" />
@@ -58,6 +60,10 @@
         <activity
             android:name=".ui.IntroActivity"
             android:theme="@style/Theme.DiarioDoBebe.NoActionBar" />
+
+        <activity android:name="com.canhub.cropper.CropImageActivity"
+            android:theme="@style/Theme.DiarioDoBebe.ActionBar"/>
+
         <activity
             android:name=".ui.main_activity.MainActivity"
             android:exported="true"

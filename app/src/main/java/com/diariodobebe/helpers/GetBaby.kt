@@ -2,6 +2,7 @@ package com.diariodobebe.helpers
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.diariodobebe.R
 import com.diariodobebe.models.Baby
@@ -31,16 +32,22 @@ class GetBaby {
             )
         }
 
-        fun updateBaby(ctx: Context, newName: String?, newBirth: Long?, newPicPath: String?, newSex: Int?) {
+        fun updateBaby(
+            ctx: Context,
+            newName: String?,
+            newBirth: Long?,
+            newPicPath: String?,
+            newSex: Int?
+        ) {
             val file = getBabyFile(ctx)
             val baby = getBaby(file)
-            file.delete()
 
             baby.name = newName ?: baby.name
             baby.picPath = newPicPath ?: baby.picPath
             baby.sex = newSex ?: baby.sex
             baby.birthDate = newBirth ?: baby.birthDate
 
+            file.delete()
             val json = Gson().toJson(baby)
             file.writeText(
                 json
@@ -57,15 +64,19 @@ class GetBaby {
         fun insertEntry(entry: Entry, activity: Activity, successMessage: String? = null) {
             val babyFile = getBabyFile(activity)
             val baby = getBaby(babyFile)
-            val id = (baby.lastEntryId ?: 0) + 1
+            if (entry.id == null) {
+                val id = (baby.lastEntryId ?: 0) + 1
+                entry.id = id
+            }
 
+            if (entry.id != null) {
+                baby.entryList?.removeAll { it.id == entry.id }
+            }
+            baby.entryList?.add(entry)
+            baby.lastEntryId = entry.id
             val gson = Gson()
-
-            entry.id = id
-
-            baby.entryList!!.add(entry)
-            baby.lastEntryId = id
             val json = gson.toJson(baby)
+            Log.e("TAG", "insertEntry: $json")
 
             babyFile.delete()
             babyFile.writeText(json, StandardCharsets.UTF_8)
@@ -75,6 +86,24 @@ class GetBaby {
                 showToast(activity, successMessage)
             }
             activity.finish()
+        }
+
+        fun removeEntries(ctx: Context, vararg entriesIds: Int?) {
+            val file = getBabyFile(ctx)
+            val baby = getBaby(file)
+            val entryList = baby.entryList ?: run {
+                return
+            }
+
+            entryList.removeAll {
+                entriesIds.contains(it.id)
+            }
+
+            baby.entryList = entryList
+            val json = Gson().toJson(baby)
+
+            file.delete()
+            file.writeText(json, StandardCharsets.UTF_8)
         }
 
     }

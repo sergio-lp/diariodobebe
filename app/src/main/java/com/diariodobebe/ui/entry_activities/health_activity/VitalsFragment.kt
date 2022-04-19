@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.diariodobebe.EXTRA_ENTRY
 import com.diariodobebe.R
 import com.diariodobebe.databinding.FragmentVitalsBinding
 import com.diariodobebe.models.Health
@@ -117,6 +118,44 @@ class VitalsFragment : Fragment() {
                 finalDate = dateToSet
             }
 
+        }
+
+
+        arguments?.getParcelable<Health>(EXTRA_ENTRY)?.let { health ->
+
+
+            if (health.vitalsTime != null && health.vitalsTime != 0.toLong()) {
+                val dfDate = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+                val dfHour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+
+                if (health.temperature != null && health.temperature != -1) {
+                    binding.edVitalsTemperature.setText(health.temperature.toString())
+                }
+
+                finalDate = health.vitalsTime
+                mood = health.mood
+                binding.edVitalDate.setText(dfDate.format(health.vitalsTime))
+                binding.edVitalTime.setText(dfHour.format(health.vitalsTime))
+            }
+
+            if (health.mood != null && health.mood != -1) {
+                val mood = when (health.mood) {
+                    Health.MOOD_GOOD -> {
+                        getString(R.string.good_mood).lowercase()
+                    }
+                    Health.MOOD_NORMAL -> {
+                        getString(R.string.normal_mood).lowercase()
+                    }
+                    Health.MOOD_BAD -> {
+                        getString(R.string.bad_mood).lowercase()
+                    }
+                    else -> {
+                        getString(R.string.not_informed).lowercase()
+                    }
+                }
+
+                binding.tvHealthMood.text = getString(R.string.mood_selector, mood)
+            }
         }
 
         return root

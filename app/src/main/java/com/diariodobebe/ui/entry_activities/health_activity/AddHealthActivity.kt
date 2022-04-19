@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.diariodobebe.EXTRA_ENTRY
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddHealthBinding
 import com.diariodobebe.helpers.GetBaby
@@ -20,6 +21,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class AddHealthActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddHealthBinding
+    private var entryId: Int? = null
     private var wantsToProceed: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,13 +38,27 @@ class AddHealthActivity : AppCompatActivity() {
         val medFragment = MedicationFragment()
         val vitalsFragment = VitalsFragment()
 
+        val health = intent.extras?.getParcelable<Health>(EXTRA_ENTRY)
+
         fragmentList.add(healthFragment)
         fragmentList.add(medFragment)
         fragmentList.add(vitalsFragment)
 
+        if (health != null) {
+            val bundle = Bundle()
+            bundle.putParcelable(EXTRA_ENTRY, health)
+            fragmentList.forEach {
+                it.arguments = bundle
+            }
+
+            supportActionBar?.title = getString(R.string.edit_entry)
+            binding.btnAddHealth.text = getString(R.string.edit_entry)
+
+            entryId = health.id
+        }
+
         binding.viewPager.adapter =
             HealthPagerAdapter(fragmentList, supportFragmentManager, lifecycle)
-
         binding.viewPager.offscreenPageLimit = 3
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, pos ->
@@ -58,7 +74,7 @@ class AddHealthActivity : AppCompatActivity() {
 
             if (wantsToProceed) {
                 val healthEvent = Health(
-                    null,
+                    entryId,
                     healthFragment.finalDate,
                     Entry.EntryType.ENTRY_HEALTH,
                     healthFragment.binding.edHealthComment.text.toString(),
@@ -69,7 +85,7 @@ class AddHealthActivity : AppCompatActivity() {
                     vitalsFragment.mood,
                     medFragment.finalDate,
                     vitalsFragment.finalDate,
-                    healthFragment.symptoms.toTypedArray()
+                    healthFragment.symptoms
                 )
 
                 GetBaby.insertEntry(healthEvent, this)
@@ -121,6 +137,12 @@ class AddHealthActivity : AppCompatActivity() {
         }
 
         override fun createFragment(position: Int): Fragment {
+            /*val fragment = fragmentList[position]
+            health?.let {
+                val bundle = Bundle()
+                bundle.putParcelable(EXTRA_ENTRY, it)
+                fragment.arguments = bundle
+            }*/
             return fragmentList[position]
         }
 

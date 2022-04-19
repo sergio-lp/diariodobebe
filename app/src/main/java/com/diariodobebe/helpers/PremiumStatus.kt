@@ -38,10 +38,11 @@ class PremiumStatus {
         @SuppressLint("InflateParams")
         fun showPremiumOffer(
             inflater: LayoutInflater,
-            title: String = inflater.context.getString(R.string.tv_offer_description)
+            title: String = inflater.context.getString(R.string.unlock_everything)
         ) {
             val view = inflater.inflate(R.layout.view_premium_offer, null, false)
             view.findViewById<TextView>(R.id.tv_offer_title).text = title
+            view.findViewById<TextView>(R.id.tv_offer_description).text = inflater.context.getString(R.string.premium_only)
             val dialog = BottomSheetDialog(inflater.context)
             dialog.setContentView(view)
 

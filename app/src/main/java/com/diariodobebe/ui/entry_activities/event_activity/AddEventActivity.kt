@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.diariodobebe.EXTRA_ENTRY
 import com.diariodobebe.R
 import com.diariodobebe.databinding.ActivityAddEventBinding
 import com.diariodobebe.helpers.GetBaby
@@ -22,7 +23,7 @@ import java.util.*
 
 class AddEventActivity : AppCompatActivity() {
     private var finalDate: Long = 0
-
+    private var entryId: Int? = null
     private lateinit var binding: ActivityAddEventBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +114,7 @@ class AddEventActivity : AppCompatActivity() {
                 )
             ) {
                 val event = Event(
-                    null,
+                    entryId,
                     finalDate,
                     Entry.EntryType.ENTRY_EVENT,
                     binding.edEventComment.text.toString(),
@@ -129,6 +130,32 @@ class AddEventActivity : AppCompatActivity() {
         } else {
             MobileAds.initialize(this)
             binding.adView.loadAd(AdRequest.Builder().build())
+        }
+
+        intent.extras?.getParcelable<Event>(EXTRA_ENTRY).let {
+            val event = it ?: run {
+                return@let
+            }
+
+            supportActionBar?.title = getString(R.string.edit_entry)
+
+            entryId = it.id
+
+            binding.edEventDescription.setText(event.activityType)
+            binding.edEventComment.setText(event.comment)
+
+            val dfDate = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+            val dfHour = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+
+            dfDate.timeZone = TimeZone.getTimeZone("UTC")
+            dfHour.timeZone = TimeZone.getTimeZone("UTC")
+
+            binding.edEventDate.setText(dfDate.format(event.date))
+            binding.edEventTime.setText(dfHour.format(event.date))
+
+            finalDate = event.date ?: 0
+
+            binding.btnAddEvent.text = getString(R.string.edit_entry)
         }
     }
 
